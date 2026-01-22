@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "multer": "^2.0.0",
+    "xlsx": "^0.18.5"
+  }
+}

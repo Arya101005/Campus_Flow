@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Campus Flow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .welcome {
+            font-size: 24px;
+            color: #333;
+        }
+        .logout-btn {
+            padding: 8px 16px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .event-card {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .event-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .registrations-list {
+            margin: 20px 0;
+        }
+        .registration-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .department-card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .class-list {
+            margin-top: 10px;
+        }
+        .class-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .class-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .student-table th,
+        .student-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .student-table th {
+            background-color: #f8f9fa;
+        }
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .alert {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .class-card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .class-header {
+            margin-bottom: 15px;
+        }
+        .class-header h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .class-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .teacher-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 200px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="welcome">Welcome, <span id="adminName">Admin</span></div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+        <div class="dashboard-content">
+            <!-- Excel Upload Form -->
+            <div class="card">
+                <h3>Upload Data from Excel</h3>
+                <form id="excelUploadForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="excelFile">Choose Excel File (.xlsx)</label>
+                        <input type="file" id="excelFile" name="excelFile" accept=".xlsx" required>
+                    </div>
+                    <button type="submit">Upload Data</button>
+                </form>
+                <div id="uploadStatus"></div>
+            </div>
+            
+            <div class="card">
+                <h3>Department Management</h3>
+                <div id="departmentList">
+                    <!-- Departments will be loaded here -->
+                </div>
+                <!-- Add a button to trigger class distribution inside Department Management -->
+                <h4 style="margin-top: 20px;">Department Overview</h4>
+                <button onclick="distributeStudents()" class="btn btn-primary">View Department</button>
+                <div id="distributionStatus" style="margin-top: 10px;"></div>
+            </div>
+
+            <!-- Class Management Card -->
+            <div class="card">
+                <h3>Class Management</h3>
+                <button onclick="loadClasses()" class="btn btn-primary">Load Classes</button>
+                <div id="classList">
+                    <!-- Classes will be loaded here -->
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Event Management</h3>
+                <p>Create and manage campus events</p>
+            </div>
+            <!-- Events Management Section -->
+            <div class="card">
+                <h3>Events Management</h3>
+                <button onclick="showEventForm()" class="btn btn-primary">Create New Event</button>
+                <div id="eventForm" style="display: none; margin-top: 20px;">
+                    <form id="createEventForm">
+                        <div class="form-group">
+                            <label for="eventTitle">Title</label>
+                            <input type="text" id="eventTitle" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDescription">Description</label>
+                            <textarea id="eventDescription" required class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDeadline">Deadline</label>
+                            <input type="datetime-local" id="eventDeadline" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventFormLink">Form Link</label>
+                            <input type="url" id="eventFormLink" required class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-success">Create Event</button>
+                        <button type="button" onclick="hideEventForm()" class="btn btn-secondary">Cancel</button>
+                    </form>
+                </div>
+                <div id="eventsList" class="mt-4">
+                    <!-- Events will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if (!token || user.role !== 'admin') {
+                window.location.href = 'http://localhost:5000/login';
+                return false;
+            }
+            return true;
+        }
+
+        // Add token to all fetch requests
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        };
+
+        // Example of how to use the headers in fetch requests
+        async function fetchData() {
+            try {
+                const response = await fetch('http://localhost:5000/api/some-endpoint', {
+                    headers: headers
+                });
+                // Handle response
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'http://localhost:5000/login';
+        }
+
+        // Helper function to generate CSV string
+        function generateCsv(data, filename) {
+            if (!data || data.length === 0) {
+                return null; // No data to generate CSV
+            }
+            const header = Object.keys(data[0]).join(',') + '\n';
+            const rows = data.map(row => Object.values(row).join(',')).join('\n');
+            return header + rows;
+        }
+
+        // Helper function to download a file
+        function downloadCsv(csvString, filename) {
+            const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) { // feature detection
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Handle Excel file upload form submission
+        document.getElementById('excelUploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('excelFile');
+            const uploadStatusDiv = document.getElementById('uploadStatus');
+
+            // Clear previous status and download links
+            uploadStatusDiv.innerHTML = '';
+
+            if (fileInput.files.length === 0) {
+                uploadStatusDiv.textContent = 'Please select an Excel file to upload.';
+                uploadStatusDiv.style.color = 'red';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('excelFile', file);
+
+            uploadStatusDiv.textContent = 'Uploading and processing...';
+            uploadStatusDiv.style.color = 'black';
+
+            try {
+                const response = await fetch('/api/admin/upload-excel', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                const result = await response.json();
+
+                // Always display the main message and summary counts
+                let summaryHtml = `<p>${result.message}</p>`;
+                if (result.summary) {
+                     summaryHtml += '<p><strong>Upload Summary:</strong></p>';
+                    for (const key in result.summary) {
+                        // Skip credentials array when displaying basic summary
+                         if (key === 'credentials') continue;
+
+                        const sheetSummary = result.summary[key];
+                         if (sheetSummary && typeof sheetSummary === 'object') { // Ensure it's an object with expected properties
+                            summaryHtml += `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> Total - ${sheetSummary.total}, Inserted - ${sheetSummary.inserted}, Skipped - ${sheetSummary.skipped}</p>`;
+                            if (sheetSummary.errors && sheetSummary.errors.length > 0) {
+                                summaryHtml += '<p>Errors:</p><ul>';
+                                sheetSummary.errors.forEach(error => {
+                                    summaryHtml += `<li>${error}</li>`;
+                                });
+                                summaryHtml += '</ul>';
+                            }
+                         }
+                    }
+                }
+
+                 uploadStatusDiv.innerHTML = summaryHtml;
+
+                if (response.ok) {
+                    uploadStatusDiv.style.color = 'green';
+                    console.log('Upload Result:', result);
+
+                    // Check and display credentials download options
+                    if (result.summary && result.summary.students && result.summary.students.credentials && result.summary.students.credentials.length > 0) {
+                        const studentCredentialsCsv = generateCsv(result.summary.students.credentials, 'student_credentials.csv');
+                        if (studentCredentialsCsv) {
+                            const studentDownloadButton = document.createElement('button');
+                            studentDownloadButton.textContent = 'Download Student Credentials';
+                            studentDownloadButton.style.marginTop = '10px';
+                             studentDownloadButton.style.marginRight = '10px';
+                            studentDownloadButton.addEventListener('click', () => {
+                                downloadCsv(studentCredentialsCsv, 'student_credentials.csv');
+                            });
+                            uploadStatusDiv.appendChild(studentDownloadButton);
+                        }
+                    }
+
+                    if (result.summary && result.summary.teachers && result.summary.teachers.credentials && result.summary.teachers.credentials.length > 0) {
+                         const teacherCredentialsCsv = generateCsv(result.summary.teachers.credentials, 'teacher_credentials.csv');
+                         if (teacherCredentialsCsv) {
+                            const teacherDownloadButton = document.createElement('button');
+                            teacherDownloadButton.textContent = 'Download Teacher Credentials';
+                            teacherDownloadButton.style.marginTop = '10px';
+                             teacherDownloadButton.style.marginRight = '10px';
+                            teacherDownloadButton.addEventListener('click', () => {
+                                downloadCsv(teacherCredentialsCsv, 'teacher_credentials.csv');
+                            });
+                            uploadStatusDiv.appendChild(teacherDownloadButton);
+                         }
+                    }
+
+                } else {
+                    uploadStatusDiv.style.color = 'red';
+                    console.error('Upload Error:', result);
+                }
+            } catch (error) {
+                console.error('Upload network error:', error);
+                uploadStatusDiv.textContent = 'An error occurred during the upload.';
+                uploadStatusDiv.style.color = 'red';
+            }
+        });
+
+        // Event Management Functions
+        function showEventForm() {
+            document.getElementById('eventForm').style.display = 'block';
+        }
+
+        function hideEventForm() {
+            document.getElementById('eventForm').style.display = 'none';
+        }
+
+        // Load all events
+        async function loadEvents() {
+            try {
+                const response = await fetch('http://localhost:5000/api/events/all', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                const events = await response.json();
+                displayEvents(events);
+            } catch (error) {
+                console.error('Error loading events:', error);
+            }
+        }
+
+        // Display events in the list
+        function displayEvents(events) {
+            const eventsList = document.getElementById('eventsList');
+            eventsList.innerHTML = events.map(event => `
+                <div class="event-card">
+                    <h4>${event.title}</h4>
+                    <p>${event.description}</p>
+                    <p>Deadline: ${new Date(event.deadline).toLocaleString()}</p>
+                    <div class="event-actions">
+                        <button onclick="viewRegistrations('${event._id}')" class="btn btn-info">View Registrations</button>
+                        <button onclick="editEvent('${event._id}')" class="btn btn-warning">Edit</button>
+                        <button onclick="deleteEvent('${event._id}')" class="btn btn-danger">Delete</button>
+                        <button onclick="exportPDF('${event._id}')" class="btn btn-secondary">Export PDF</button>
+                        <button onclick="exportCSV('${event._id}')" class="btn btn-secondary">Export CSV</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Create new event
+        document.getElementById('createEventForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                const eventData = {
+                    title: document.getElementById('eventTitle').value,
+                    description: document.getElementById('eventDescription').value,
+                    deadline: document.getElementById('eventDeadline').value,
+                    formLink: document.getElementById('eventFormLink').value
+                };
+
+                const response = await fetch('http://localhost:5000/api/events/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(eventData)
+                });
+
+                if (response.ok) {
+                    hideEventForm();
+                    loadEvents();
+                    e.target.reset();
+                } else {
+                    const error = await response.json();
+                    alert(error.message);
+                }
+            } catch (error) {
+                console.error('Error creating event:', error);
+                alert('Error creating event');
+            }
+        });
+
+        // View registrations for an event
+        async function viewRegistrations(eventId) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/events/${eventId}/registrations`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                const registrations = await response.json();
+                displayRegistrations(registrations);
+            } catch (error) {
+                console.error('Error loading registrations:', error);
+            }
+        }
+
+        // Display registrations in a modal
+        function displayRegistrations(registrations) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3>Registrations</h3>
+                    <div class="registrations-list">
+                        ${registrations.map(reg => `
+                            <div class="registration-item">
+                                <p>Name: ${reg.userId.name}</p>
+                                <p>Roll Number: ${reg.userId.rollNumber}</p>
+                                <p>Department: ${reg.userId.department}</p>
+                                <p>Email: ${reg.userId.email}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="btn btn-secondary">Close</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Export registrations as PDF
+        async function exportPDF(eventId) {
+            window.open(`http://localhost:5000/api/events/${eventId}/registrations/pdf`, '_blank');
+        }
+
+        // Export registrations as CSV
+        async function exportCSV(eventId) {
+            window.open(`http://localhost:5000/api/events/${eventId}/registrations/csv`, '_blank');
+        }
+
+        // Edit event
+        async function editEvent(eventId) {
+            // Implementation for editing event
+        }
+
+        // Delete event
+        async function deleteEvent(eventId) {
+            if (confirm('Are you sure you want to delete this event?')) {
+                try {
+                    const response = await fetch(`http://localhost:5000/api/events/${eventId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    });
+                    if (response.ok) {
+                        loadEvents();
+                    } else {
+                        const error = await response.json();
+                        alert(error.message);
+                    }
+                } catch (error) {
+                    console.error('Error deleting event:', error);
+                    alert('Error deleting event');
+                }
+            }
+        }
+
+        // New function to distribute students into classes
+        async function distributeStudents() {
+            const distributionStatusDiv = document.getElementById('distributionStatus');
+            distributionStatusDiv.innerHTML = 'Loading department details...';
+            distributionStatusDiv.style.color = 'black';
+
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/distribute-classes', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    distributionStatusDiv.innerHTML = `Department details updated successfully.`;
+                    distributionStatusDiv.style.color = 'green';
+                    // Refresh the displayed data after distribution
+                    loadDepartmentsAndClassesAndStudents();
+                } else {
+                    distributionStatusDiv.innerHTML = `Failed to update department details: ${result.message || 'Unknown error'}.`;
+                    distributionStatusDiv.style.color = 'red';
+                    console.error('Distribution error:', result);
+                }
+
+            } catch (error) {
+                console.error('Distribution network error:', error);
+                distributionStatusDiv.innerHTML = 'An error occurred while updating department details.';
+                distributionStatusDiv.style.color = 'red';
+            }
+        }
+
+        // Initialize dashboard
+        function initDashboard() {
+            console.log('initDashboard called');
+            if (!checkAuth()) {
+                console.log('checkAuth failed, redirecting.');
+                return;
+            }
+
+            console.log('checkAuth passed, loading data.');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            // Display admin name if logged in
+            if (user && user.name) {
+                document.getElementById('adminName').textContent = user.name;
+            }
+
+            // Load departments, classes, and students
+            loadDepartmentsAndClassesAndStudents();
+            // Load existing data (Events)
+            loadEvents();
+            loadClasses(); // Load classes
+        }
+
+        // Load departments, classes, and students
+        async function loadDepartmentsAndClassesAndStudents() {
+            console.log('loadDepartmentsAndClassesAndStudents called');
+            try {
+                 console.log('Attempting to fetch /api/admin/departments');
+                const response = await fetch('/api/admin/departments', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to fetch departments');
+                }
+
+                // Expecting an array of department names now
+                const departmentNames = await response.json();
+                console.log('Received department names:', departmentNames);
+
+                // Update department list
+                const departmentList = document.getElementById('departmentList');
+                departmentList.innerHTML = '';
+                
+                if (departmentNames.length === 0) {
+                    departmentList.innerHTML = '<p>No departments found.</p>';
+                    return;
+                }
+
+                // For each department name, create a simple card with just the name and view button
+                departmentNames.forEach(deptName => {
+                    const deptItem = document.createElement('div');
+                    deptItem.className = 'department-item';
+                    deptItem.innerHTML = `
+                        <h3>${deptName}</h3>
+                        <button onclick="viewDepartmentDetails('${deptName}')" class="btn btn-info">View Details</button>
+                    `;
+                    departmentList.appendChild(deptItem);
+                });
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showNotification('Error loading data: ' + error.message, 'error');
+            }
+        }
+
+        // New function to display classes
+        function displayClasses(classes) {
+            const classList = document.getElementById('classList');
+            if (!classList) { // Add null check
+                 console.error('Class list element not found');
+                 return;
+            }
+
+            if (!classes || !classes.length) {
+                classList.innerHTML = '<p>No classes found.</p>';
+                return;
+            }
+
+            classList.innerHTML = classes.map(cls => `
+                <div class="class-card">
+                    <h4>${cls.name}</h4>
+                    <p>Department: ${cls.department}</p>
+                    <p>Students: ${cls.students.length}</p>
+                    <button onclick="viewClassDetails('${cls._id}')" class="btn btn-sm btn-info">View Details</button>
+                </div>
+            `).join('');
+        }
+
+         // New function to display students
+        function displayStudents(students) {
+            const studentList = document.getElementById('studentList');
+            if (!studentList) { // Add null check
+                 console.error('Student list element not found');
+                 return;
+            }
+
+            if (!students || !students.length) {
+                 studentList.innerHTML = '<p>No students found.</p>';
+                 return;
+            }
+
+            // Simple table display for now
+             studentList.innerHTML = `
+                 <table class="student-table">
+                     <thead>
+                         <tr>
+                             <th>Name</th>
+                             <th>Roll Number</th>
+                             <th>Department</th>
+                             <th>Class</th>
+                             <th>Email</th>
+                             <th>Year</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         ${students.map(student => `
+                             <tr>
+                                 <td>${student.name}</td>
+                                 <td>${student.rollNumber}</td>
+                                 <td>${student.department}</td>
+                                 <td>${student.class ? student.class.name : 'N/A'}</td> <!-- Display class name -->
+                                 <td>${student.email}</td>
+                                 <td>${student.year}</td>
+                             </tr>
+                         `).join('')}
+                     </tbody>
+                 </table>
+             `;
+        }
+
+        // Add these new functions after the existing script
+        async function viewDepartmentDetails(departmentName) {
+            try {
+                // Fetch detailed information for the specific department
+                const response = await fetch(`/api/admin/departments/${encodeURIComponent(departmentName)}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to fetch department details');
+                }
+
+                const details = await response.json();
+                
+                // Create and show modal
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <h2>${departmentName} Details</h2>
+                        <div class="details-section">
+                            <h3>Classes</h3>
+                            <div class="class-list">
+                                ${details.classes.map(cls => `
+                                    <div class="class-item">
+                                        <h4>${cls.name}</h4>
+                                        <p>Students: ${cls.students.length}</p>
+                                        <button onclick="viewClassDetails('${cls._id}')" class="btn btn-sm btn-info">View Class</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="details-section">
+                            <h3>Teachers</h3>
+                            <div class="teacher-list">
+                                ${details.teachers.map(teacher => `
+                                    <div class="teacher-item">
+                                        <p>${teacher.name}</p>
+                                        <p>${teacher.email}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" class="btn btn-secondary">Close</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            } catch (error) {
+                console.error('Error loading department details:', error);
+                showNotification('Error loading department details: ' + error.message, 'error');
+            }
+        }
+
+        async function viewClassDetails(classId) {
+            try {
+                const response = await fetch(`/api/admin/classes/${classId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to fetch class details');
+                }
+
+                const classDetails = await response.json();
+                
+                // Create and show modal
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <h2>${classDetails.name} Details</h2>
+                        <div class="details-section">
+                            <h3>Students</h3>
+                            <table class="student-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Roll Number</th>
+                                        <th>Email</th>
+                                        <th>Year</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${classDetails.students.map(student => `
+                                        <tr>
+                                            <td>${student.name}</td>
+                                            <td>${student.rollNumber}</td>
+                                            <td>${student.email}</td>
+                                            <td>${student.year}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" class="btn btn-secondary">Close</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            } catch (error) {
+                console.error('Error loading class details:', error);
+                showNotification('Error loading class details: ' + error.message, 'error');
+            }
+        }
+
+        // Add some CSS for the new elements
+        const style = document.createElement('style');
+        style.textContent = `
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+            .modal-content {
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                max-width: 800px;
+                width: 90%;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+            .details-section {
+                margin: 20px 0;
+            }
+            .class-item, .teacher-item {
+                padding: 10px;
+                border: 1px solid #ddd;
+                margin: 5px 0;
+                border-radius: 4px;
+            }
+            .btn {
+                padding: 8px 16px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin: 5px;
+            }
+            .btn-info {
+                background-color: #17a2b8;
+                color: white;
+            }
+            .btn-secondary {
+                background-color: #6c757d;
+                color: white;
+            }
+            .btn-sm {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Load classes
+        async function loadClasses() {
+            console.log('loadClasses called');
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/classes', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server response:', errorText);
+                    throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                }
+
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await response.text();
+                    console.error('Invalid content type:', contentType);
+                    console.error('Response text:', text);
+                    throw new Error('Server returned non-JSON response');
+                }
+
+                const classes = await response.json();
+                console.log('Received classes:', classes);
+
+                const classListDiv = document.getElementById('classList');
+                if (!classListDiv) {
+                    console.error('Class list element not found');
+                    return;
+                }
+
+                classListDiv.innerHTML = ''; // Clear previous content
+
+                if (!classes || classes.length === 0) {
+                    classListDiv.innerHTML = '<p>No classes found.</p>';
+                    return;
+                }
+
+                // First, fetch all teachers to populate the dropdown
+                const teachersResponse = await fetch('http://localhost:5000/api/admin/teachers', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!teachersResponse.ok) {
+                    throw new Error('Failed to fetch teachers');
+                }
+
+                const teachers = await teachersResponse.json();
+
+                classes.forEach(classInfo => {
+                    const classElement = document.createElement('div');
+                    classElement.className = 'class-card';
+                    classElement.innerHTML = `
+                        <div class="class-header">
+                            <h4>${classInfo.name}</h4>
+                            <p>Department: ${classInfo.department ? classInfo.department.name : 'N/A'}</p>
+                            <p>Students: ${classInfo.students ? classInfo.students.length : 0}</p>
+                        </div>
+                        <div class="class-actions">
+                            <select id="teacher-${classInfo._id}" class="teacher-select">
+                                <option value="">Select Teacher</option>
+                                ${teachers.map(teacher => `
+                                    <option value="${teacher._id}" ${classInfo.teacher && classInfo.teacher._id === teacher._id ? 'selected' : ''}>
+                                        ${teacher.name} (${teacher.department})
+                                    </option>
+                                `).join('')}
+                            </select>
+                            <button onclick="assignTeacher('${classInfo._id}')" class="btn btn-primary">Assign Teacher</button>
+                            <button onclick="viewClassDetails('${classInfo._id}')" class="btn btn-info">View Details</button>
+                        </div>
+                    `;
+                    classListDiv.appendChild(classElement);
+                });
+
+            } catch (error) {
+                console.error('Error loading classes:', error);
+                const classListDiv = document.getElementById('classList');
+                if (classListDiv) {
+                    classListDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            <p>Error loading classes: ${error.message}</p>
+                            <p>Please check if the server is running and try again.</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Function to assign teacher to a class
+        async function assignTeacher(classId) {
+            const teacherSelect = document.getElementById(`teacher-${classId}`);
+            const teacherId = teacherSelect.value;
+
+            if (!teacherId) {
+                alert('Please select a teacher');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/admin/classes/${classId}/assign-teacher`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ teacherId })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || 'Failed to assign teacher');
+                }
+
+                alert('Teacher assigned successfully');
+                loadClasses(); // Refresh the class list
+            } catch (error) {
+                console.error('Error assigning teacher:', error);
+                alert(error.message);
+            }
+        }
+    </script>
+</body>
+</html>

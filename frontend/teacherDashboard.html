@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - Campus Flow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .welcome {
+            font-size: 24px;
+            color: #333;
+        }
+        .logout-btn {
+            padding: 8px 16px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .task-card {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .task-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .submission-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .submission-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .submission-item:last-child {
+            border-bottom: none;
+        }
+        .type-specific-fields {
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .submission-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+        .submission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .submission-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .status-pending { background-color: #ffc107; color: #000; }
+        .status-submitted { background-color: #28a745; color: #fff; }
+        .status-late { background-color: #dc3545; color: #fff; }
+        .submission-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="welcome">Welcome, <span id="teacherName">Teacher</span></div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+        <div class="dashboard-content">
+            <div class="card">
+                <h3>My Classes</h3>
+                <div id="assignedClasses">
+                    <!-- Classes will be loaded here -->
+                </div>
+            </div>
+            <div class="card">
+                <h3>Grade Submissions</h3>
+                <p>Submit and manage grades for your students.</p>
+            </div>
+            <div class="card">
+                <h3>Timetable</h3>
+                <p>Check your teaching schedule.</p>
+            </div>
+            <div class="card">
+                <h3>Task Management</h3>
+                <button onclick="showTaskForm()" class="btn btn-primary">Create New Task</button>
+                
+                <div class="task-form" id="taskForm" style="display: none;">
+                    <h3>Create New Task</h3>
+                    <form id="createTaskForm">
+                        <div class="form-group">
+                            <label for="taskTitle">Title</label>
+                            <input type="text" id="taskTitle" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDescription">Description</label>
+                            <textarea id="taskDescription" name="description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskClass">Class</label>
+                            <select id="taskClass" name="class" required>
+                                <option value="">Select a class</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDeadline">Deadline</label>
+                            <input type="datetime-local" id="taskDeadline" name="deadline" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskType">Assignment Type</label>
+                            <select id="taskType" name="type" required onchange="showTypeSpecificFields()">
+                                <option value="document">Document Upload</option>
+                                <option value="form">Form Submission</option>
+                                <option value="hackathon">Hackathon</option>
+                                <option value="quiz">Quiz</option>
+                                <option value="project">Project</option>
+                            </select>
+                        </div>
+
+                        <!-- Document Upload Fields -->
+                        <div id="documentFields" class="type-specific-fields">
+                            <div class="form-group">
+                                <label for="taskFile">Task File (PDF/DOC)</label>
+                                <input type="file" id="taskFile" name="file" accept=".pdf,.doc,.docx">
+                            </div>
+                        </div>
+
+                        <!-- Form Fields -->
+                        <div id="formFields" class="type-specific-fields" style="display: none;">
+                            <div class="form-group">
+                                <label for="formLink">Form Link</label>
+                                <input type="url" id="formLink" name="formLink" placeholder="https://forms.google.com/...">
+                            </div>
+                        </div>
+
+                        <!-- Hackathon Fields -->
+                        <div id="hackathonFields" class="type-specific-fields" style="display: none;">
+                            <div class="form-group">
+                                <label for="startDate">Start Date</label>
+                                <input type="datetime-local" id="startDate" name="startDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="endDate">End Date</label>
+                                <input type="datetime-local" id="endDate" name="endDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="platform">Platform</label>
+                                <input type="text" id="platform" name="platform" placeholder="e.g., Devpost, HackerEarth">
+                            </div>
+                            <div class="form-group">
+                                <label for="registrationLink">Registration Link</label>
+                                <input type="url" id="registrationLink" name="registrationLink">
+                            </div>
+                            <div class="form-group">
+                                <label for="requirements">Requirements</label>
+                                <textarea id="requirements" name="requirements" placeholder="Enter hackathon requirements"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Fields -->
+                        <div id="quizFields" class="type-specific-fields" style="display: none;">
+                            <div class="form-group">
+                                <label for="totalQuestions">Total Questions</label>
+                                <input type="number" id="totalQuestions" name="totalQuestions" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="timeLimit">Time Limit (minutes)</label>
+                                <input type="number" id="timeLimit" name="timeLimit" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="passingScore">Passing Score</label>
+                                <input type="number" id="passingScore" name="passingScore" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="quizLink">Quiz Link</label>
+                                <input type="url" id="quizLink" name="quizLink">
+                            </div>
+                        </div>
+
+                        <!-- Project Fields -->
+                        <div id="projectFields" class="type-specific-fields" style="display: none;">
+                            <div class="form-group">
+                                <label for="projectRequirements">Requirements</label>
+                                <textarea id="projectRequirements" name="requirements" placeholder="Enter project requirements"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="deliverables">Deliverables (comma-separated)</label>
+                                <input type="text" id="deliverables" name="deliverables" placeholder="e.g., Code, Documentation, Presentation">
+                            </div>
+                            <div class="form-group">
+                                <label for="evaluationCriteria">Evaluation Criteria (comma-separated)</label>
+                                <input type="text" id="evaluationCriteria" name="evaluationCriteria" placeholder="e.g., Functionality, Code Quality, Documentation">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Create Task</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideTaskForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="tasksList" class="mt-4">
+                    <!-- Tasks will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        function checkAuth() {
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+        // If no token or incorrect role, redirect to login
+        if (!token || user.role !== 'teacher') {
+            console.log('No token or incorrect role for teacher dashboard, redirecting to login.');
+            window.location.replace('http://localhost:5000/login');
+                return false;
+            }
+            return true;
+        }
+
+        // Initialize dashboard
+        function initDashboard() {
+            console.log('initDashboard called');
+            if (!checkAuth()) return;
+
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+        // Display teacher name if logged in
+        if (user && user.name) {
+            document.getElementById('teacherName').textContent = user.name;
+        }
+
+            // Load assigned classes and students
+            loadAssignedClasses();
+            
+            // Initially show document upload fields
+            showTypeSpecificFields();
+
+            // Load tasks
+            loadTasks();
+        }
+
+        // Function to load assigned classes and students
+        async function loadAssignedClasses() {
+            console.log('loadAssignedClasses called');
+            const assignedClassesDiv = document.getElementById('assignedClasses');
+            const taskClassSelect = document.getElementById('taskClass');
+            if (!assignedClassesDiv || !taskClassSelect) {
+                console.error('Required elements not found');
+                return;
+            }
+
+            assignedClassesDiv.innerHTML = ''; // Clear previous content
+            taskClassSelect.innerHTML = '<option value="">Select a class</option>'; // Reset dropdown
+
+            try {
+                const response = await fetch('http://localhost:5000/api/teachers/classes', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to fetch assigned classes');
+                }
+
+                const classes = await response.json();
+                console.log('Received assigned classes:', classes);
+
+                if (classes.length === 0) {
+                    assignedClassesDiv.innerHTML = '<p>No classes assigned.</p>';
+                    return;
+                }
+
+                classes.forEach(cls => {
+                    // Add to classes list
+                    const classElement = document.createElement('div');
+                    classElement.innerHTML = `
+                        <h4>Class: ${cls.name}</h4>
+                        <ul id="students-list-${cls._id}">
+                            <!-- Students will be loaded here -->
+                        </ul>
+                    `;
+                    assignedClassesDiv.appendChild(classElement);
+
+                    // Add to task form dropdown
+                    const option = document.createElement('option');
+                    option.value = cls._id;
+                    option.textContent = cls.name;
+                    taskClassSelect.appendChild(option);
+
+                    const studentsList = document.getElementById(`students-list-${cls._id}`);
+                    if (cls.students && cls.students.length > 0) {
+                        cls.students.forEach(student => {
+                            const studentItem = document.createElement('li');
+                            studentItem.textContent = student.name;
+                            studentsList.appendChild(studentItem);
+                        });
+                    } else {
+                        const noStudentItem = document.createElement('li');
+                        noStudentItem.textContent = 'No students assigned to this class.';
+                        studentsList.appendChild(noStudentItem);
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error loading assigned classes:', error);
+                assignedClassesDiv.innerHTML = `<p style="color: red;">Error loading assigned classes: ${error.message}</p>`;
+            }
+        }
+
+        // Function to show/hide type-specific fields in task form
+        function showTypeSpecificFields() {
+            const type = document.getElementById('taskType').value;
+            document.querySelectorAll('.type-specific-fields').forEach(field => {
+                field.style.display = 'none';
+            });
+            document.getElementById(`${type}Fields`).style.display = 'block';
+        }
+
+        // Task Management Functions
+        function showTaskForm() {
+            document.getElementById('taskForm').style.display = 'block';
+            // Reset form
+            document.getElementById('createTaskForm').reset();
+            // Hide all type-specific fields initially
+            document.querySelectorAll('.type-specific-fields').forEach(field => {
+                field.style.display = 'none';
+            });
+        }
+
+        function hideTaskForm() {
+            document.getElementById('taskForm').style.display = 'none';
+        }
+
+        // Load tasks
+        async function loadTasks() {
+            try {
+                const response = await fetch('http://localhost:5000/api/tasks/teacher', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new TypeError("Oops, we haven't got JSON!");
+                }
+                
+                const tasks = await response.json();
+                displayTasks(tasks);
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                alert('Error loading tasks. Please try again.');
+            }
+        }
+
+        // Display tasks
+        function displayTasks(tasks) {
+            const tasksList = document.getElementById('tasksList');
+            if (!tasks.length) {
+                tasksList.innerHTML = '<p>No tasks created yet.</p>';
+                return;
+            }
+
+            tasksList.innerHTML = tasks.map(task => `
+                <div class="task-card">
+                    <div class="task-header">
+                        <h4>${task.title} ${getTypeBadge(task.type)}</h4>
+                        <div class="task-actions">
+                            <button onclick="viewSubmissions('${task._id}')" class="btn btn-sm btn-primary">View Submissions</button>
+                        </div>
+                    </div>
+                    <p>${task.description}</p>
+                    <div class="task-details">
+                        <span>Class: ${task.class}</span>
+                        <span>Deadline: ${new Date(task.deadline).toLocaleString()}</span>
+                    </div>
+                    ${getTypeSpecificDetails(task)}
+                </div>
+            `).join('');
+        }
+
+        function getTypeBadge(type) {
+            const badges = {
+                document: '<span class="badge badge-primary">Document</span>',
+                form: '<span class="badge badge-info">Form</span>',
+                hackathon: '<span class="badge badge-warning">Hackathon</span>',
+                quiz: '<span class="badge badge-success">Quiz</span>',
+                project: '<span class="badge badge-secondary">Project</span>'
+            };
+            return badges[type] || '';
+        }
+
+        function getTypeSpecificDetails(task) {
+            switch (task.type) {
+                case 'form':
+                    return `<div class="task-link"><a href="${task.formLink}" target="_blank">Form Link</a></div>`;
+                case 'hackathon':
+                    return `
+                        <div class="hackathon-details">
+                            <p>Platform: ${task.hackathonDetails.platform}</p>
+                            <p>Duration: ${new Date(task.hackathonDetails.startDate).toLocaleDateString()} - ${new Date(task.hackathonDetails.endDate).toLocaleDateString()}</p>
+                            <a href="${task.hackathonDetails.registrationLink}" target="_blank">Registration Link</a>
+                        </div>
+                    `;
+                case 'quiz':
+                    return `
+                        <div class="quiz-details">
+                            <p>Questions: ${task.quizDetails.totalQuestions}</p>
+                            <p>Time Limit: ${task.quizDetails.timeLimit} minutes</p>
+                            <p>Passing Score: ${task.quizDetails.passingScore}</p>
+                            <a href="${task.quizDetails.quizLink}" target="_blank">Quiz Link</a>
+                        </div>
+                    `;
+                case 'project':
+                    return `
+                        <div class="project-details">
+                            <p><strong>Requirements:</strong> ${task.projectDetails.requirements}</p>
+                            <p><strong>Deliverables:</strong> ${task.projectDetails.deliverables.join(', ')}</p>
+                            <p><strong>Evaluation Criteria:</strong> ${task.projectDetails.evaluationCriteria.join(', ')}</p>
+                        </div>
+                    `;
+                default:
+                    return '';
+            }
+        }
+
+        // Create new task
+        document.getElementById('createTaskForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            try {
+                const formData = new FormData(e.target);
+                const taskData = {
+                    title: formData.get('title'),
+                    description: formData.get('description'),
+                    class: formData.get('class'),
+                    deadline: formData.get('deadline'),
+                    type: formData.get('type'),
+                    teacherId: JSON.parse(localStorage.getItem('user')).id
+                };
+
+                // Add type-specific data
+                switch (taskData.type) {
+                    case 'form':
+                        taskData.formLink = formData.get('formLink');
+                        break;
+                    case 'hackathon':
+                        taskData.startDate = formData.get('startDate');
+                        taskData.endDate = formData.get('endDate');
+                        taskData.platform = formData.get('platform');
+                        taskData.registrationLink = formData.get('registrationLink');
+                        taskData.requirements = formData.get('requirements');
+                        break;
+                    case 'quiz':
+                        taskData.totalQuestions = formData.get('totalQuestions');
+                        taskData.timeLimit = formData.get('timeLimit');
+                        taskData.passingScore = formData.get('passingScore');
+                        taskData.quizLink = formData.get('quizLink');
+                        break;
+                    case 'project':
+                        taskData.requirements = formData.get('requirements');
+                        taskData.deliverables = formData.get('deliverables');
+                        taskData.evaluationCriteria = formData.get('evaluationCriteria');
+                        break;
+                }
+
+                console.log('Submitting task data:', taskData);
+
+                const response = await fetch('http://localhost:5000/api/tasks/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(taskData)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Error creating task');
+                }
+
+                const data = await response.json();
+                console.log('Task created successfully:', data);
+
+                alert('Task created successfully!');
+                hideTaskForm();
+                loadTasks();
+            } catch (error) {
+                console.error('Error creating task:', error);
+                alert(error.message || 'Error creating task. Please try again.');
+            }
+        });
+
+        // View submissions
+        async function viewSubmissions(taskId) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/tasks/${taskId}/submissions`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch submissions');
+                }
+                const data = await response.json();
+                displaySubmissions(data);
+            } catch (error) {
+                console.error('Error loading submissions:', error);
+                alert('Error loading submissions. Please try again.');
+            }
+        }
+
+        // Display submissions in a modal
+        function displaySubmissions(data) {
+            const { submissions, statistics } = data;
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <span class="close-modal" onclick="this.parentElement.parentElement.remove()">&times;</span>
+                    <h3>Task Submissions</h3>
+                    <div class="submission-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Students:</span>
+                            <span class="stat-value">${statistics.total}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Submitted:</span>
+                            <span class="stat-value">${statistics.submitted}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Late:</span>
+                            <span class="stat-value">${statistics.late}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Pending:</span>
+                            <span class="stat-value">${statistics.pending}</span>
+                        </div>
+                    </div>
+                    <div class="submissions-list">
+                        ${submissions.map(sub => `
+                            <div class="submission-item">
+                                <div class="submission-header">
+                                    <div>
+                                        <h4>${sub.studentId.name}</h4>
+                                        <p>Roll Number: ${sub.studentId.rollNumber}</p>
+                                        <p>Department: ${sub.studentId.department}</p>
+                                    </div>
+                                    <span class="submission-status status-${sub.status.toLowerCase()}">${sub.status}</span>
+                                </div>
+                                <div class="submission-details">
+                                    <p>Submitted: ${new Date(sub.submittedAt).toLocaleString()}</p>
+                                    ${getSubmissionContent(sub)}
+                                </div>
+                                <div class="submission-actions">
+                                    ${getSubmissionActions(sub)}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.style.display = 'block';
+        }
+
+        function getSubmissionContent(submission) {
+            switch (submission.type) {
+                case 'document':
+                    return `
+                        <div class="submission-file">
+                            <a href="${submission.fileUrl}" target="_blank" class="btn btn-primary">View Document</a>
+                        </div>
+                    `;
+                case 'form':
+                    return `
+                        <div class="submission-form">
+                            <h5>Form Responses:</h5>
+                            <pre>${JSON.stringify(submission.formResponse, null, 2)}</pre>
+                        </div>
+                    `;
+                case 'hackathon':
+                    return `
+                        <div class="submission-hackathon">
+                            <p><strong>Project Link:</strong> <a href="${submission.hackathonSubmission.projectLink}" target="_blank">View Project</a></p>
+                            <p><strong>Team Details:</strong> ${submission.hackathonSubmission.teamDetails}</p>
+                            <p><strong>Achievements:</strong> ${submission.hackathonSubmission.achievements}</p>
+                        </div>
+                    `;
+                case 'quiz':
+                    return `
+                        <div class="submission-quiz">
+                            <p><strong>Score:</strong> ${submission.quizScore}</p>
+                        </div>
+                    `;
+                case 'project':
+                    return `
+                        <div class="submission-project">
+                            <p><strong>Deliverables:</strong></p>
+                            <ul>
+                                ${submission.projectSubmission.deliverables.map(d => `<li>${d}</li>`).join('')}
+                            </ul>
+                            <p><strong>Documentation:</strong> ${submission.projectSubmission.documentation}</p>
+                            <p><strong>Demo Link:</strong> <a href="${submission.projectSubmission.demoLink}" target="_blank">View Demo</a></p>
+                        </div>
+                    `;
+                default:
+                    return '';
+            }
+        }
+
+        function getSubmissionActions(submission) {
+            const actions = [];
+            
+            if (submission.status === 'pending') {
+                actions.push(`
+                    <button onclick="updateSubmissionStatus('${submission._id}', 'submitted')" class="btn btn-success">
+                        Mark as Submitted
+                    </button>
+                `);
+            }
+            
+            if (submission.status === 'submitted') {
+                actions.push(`
+                    <button onclick="updateSubmissionStatus('${submission._id}', 'late')" class="btn btn-danger">
+                        Mark as Late
+                    </button>
+                `);
+            }
+            
+            if (submission.status === 'late') {
+                actions.push(`
+                    <button onclick="updateSubmissionStatus('${submission._id}', 'submitted')" class="btn btn-success">
+                        Mark as Submitted
+                    </button>
+                `);
+            }
+            
+            return actions.join('');
+        }
+
+        async function updateSubmissionStatus(submissionId, newStatus) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/tasks/submission/${submissionId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update submission status');
+                }
+
+                // Refresh the submissions view
+                const taskId = document.querySelector('.modal').dataset.taskId;
+                viewSubmissions(taskId);
+            } catch (error) {
+                console.error('Error updating submission status:', error);
+                alert('Error updating submission status. Please try again.');
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.replace('http://localhost:5000/login');
+        }
+
+        // Initialize the dashboard when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard();
+        });
+    </script>
+</body>
+</html> 
