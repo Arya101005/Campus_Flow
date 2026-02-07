@@ -7,9 +7,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('./config');
 const adminRoutes = require('./routes/admin.routes');
+const teacherRoutes = require('./routes/teacher.routes');
 const Student = require('./models/student.model');
 const Teacher = require('./models/teacher.model');
 const Admin = require('./models/admin.model');
+const Class = require('./models/class.model');
+const Event = require('./models/event.model');
+const Task = require('./models/task.model');
 
 // Create Express app
 const app = express();
@@ -28,24 +32,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Routes
 app.use('/api/admin', adminRoutes);
-
-// Middleware to verify JWT token
-const verifyToken = (req, res, next) => {
-    // const authHeader = req.headers.authorization;
-    // const token = authHeader?.split(' ')[1];
-
-    // if (!token) {
-    //     return res.status(401).json({ message: 'No token provided' });
-    // }
-
-    // try {
-    //     const decoded = jwt.verify(token, config.JWT_SECRET);
-    //     req.user = decoded;
-        next(); // Temporarily allow all requests to pass
-    // } catch (error) {
-    //     return res.status(401).json({ message: 'Invalid token' });
-    // }
-};
+app.use('/api/teachers', teacherRoutes);
 
 // Login route
 app.post('/api/login', async (req, res) => {
@@ -105,6 +92,101 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
+// Events API routes
+app.get('/api/events/all', async (req, res) => {
+    try {
+        const events = await Event.find();
+        res.json(events);
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        res.json([]); // Return empty array on error
+    }
+});
+
+app.post('/api/events/add', async (req, res) => {
+    try {
+        const { title, description, deadline, formLink } = req.body;
+        const event = new Event({ title, description, deadline, formLink });
+        await event.save();
+        res.json({ message: 'Event created successfully', event });
+    } catch (error) {
+        console.error('Error creating event:', error);
+        res.status(500).json({ message: 'Error creating event' });
+    }
+});
+
+app.delete('/api/events/:eventId', async (req, res) => {
+    try {
+        await Event.findByIdAndDelete(req.params.eventId);
+        res.json({ message: 'Event deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting event:', error);
+        res.status(500).json({ message: 'Error deleting event' });
+    }
+});
+
+// Classes API routes
+app.get('/api/classes/all', async (req, res) => {
+    try {
+        const classes = await Class.find().populate('students').populate('teacherId');
+        res.json(classes);
+    } catch (error) {
+        console.error('Error fetching classes:', error);
+        res.json([]); // Return empty array on error
+    }
+});
+
+// Tasks API routes
+app.get('/api/tasks/class/:classId', async (req, res) => {
+    try {
+        const tasks = await Task.find({ class: req.params.classId }).populate('teacherId class');
+        res.json(tasks);
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+        res.json([]); // Return empty array on error
+    }
+});
+
+app.get('/api/tasks/teacher', async (req, res) => {
+    try {
+        const tasks = await Task.find().populate('class');
+        res.json(tasks);
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+        res.json([]); // Return empty array on error
+    }
+});
+
+app.post('/api/tasks/create', async (req, res) => {
+    try {
+        const task = new Task(req.body);
+        await task.save();
+        res.json({ message: 'Task created successfully', task });
+    } catch (error) {
+        console.error('Error creating task:', error);
+        res.status(500).json({ message: 'Error creating task' });
+    }
+});
+
+app.post('/api/tasks/:taskId/submit', async (req, res) => {
+    try {
+        res.json({ message: 'Task submitted successfully' });
+    } catch (error) {
+        console.error('Error submitting task:', error);
+        res.status(500).json({ message: 'Error submitting task' });
+    }
+});
+
+app.get('/api/tasks/:taskId/submissions', async (req, res) => {
+    try {
+        const task = await Task.findById(req.params.taskId).populate('submissions.studentId');
+        res.json(task?.submissions || []);
+    } catch (error) {
+        console.error('Error fetching submissions:', error);
+        res.json([]); // Return empty array on error
+    }
+});
+
 // Serve Protected dashboards (frontend handles token verification)
 app.get('/studentDashboard', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/studentDashboard.html'));
@@ -127,33 +209,22 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/login.html'));
 });
 
-// Catch-all route for frontend routes (send login page)
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/login.html'));
+// Health check route
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', message: 'Server is running' });
 });
 
-// API routes that require token verification (Example: you will need to add your actual API endpoints here)
-// app.get('/api/student/data', verifyToken, (req, res) => { ... });
-// app.get('/api/teacher/classes', verifyToken, (req, res) => { ... });
-// app.get('/api/admin/users', verifyToken, (req, res) => { ... });
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error('Error:', err);
+    res.status(500).json({ 
+        message: 'Something went wrong!',
+        error: err.message 
+    });
+});
 
 // MongoDB and Server Start
 const startServer = () => {
-    // Health check route
-    app.get('/api/health', (req, res) => {
-        res.json({ status: 'ok', message: 'Server is running' });
-    });
-
-    // Global error handler
-    app.use((err, req, res, next) => {
-        console.error('Error:', err);
-        res.status(500).json({ 
-            message: 'Something went wrong!',
-            error: err.message 
-        });
-    });
-
-    // Connect to MongoDB
     mongoose.connect(config.MONGODB_URI)
         .then(() => {
             console.log('Connected to MongoDB');
@@ -163,7 +234,10 @@ const startServer = () => {
         })
         .catch(err => {
             console.error('MongoDB connection error:', err);
-            process.exit(1);
+            console.log('Starting server without MongoDB for frontend testing...');
+            app.listen(config.PORT, () => {
+                console.log(`Server is running on port ${config.PORT} (without MongoDB)`);
+            });
         });
 };
 
