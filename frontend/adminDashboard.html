@@ -6,6 +6,7 @@
     <title>Admin Dashboard - Campus Flow</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -313,7 +314,7 @@
             const token = localStorage.getItem('token');
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             if (!token || user.role !== 'admin') {
-                window.location.replace('http://localhost:5000/login');
+                window.location.replace('/login');
                 return false;
             }
             return true;
@@ -347,7 +348,7 @@
         // Load events
         async function loadEvents() {
             try {
-                const response = await fetch('http://localhost:5000/api/events/all', {
+                const response = await fetch(`${API_CONFIG.apiBaseUrl}/api/events/all`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -435,7 +436,7 @@
         // Load classes
         async function loadClasses() {
             try {
-                const response = await fetch('http://localhost:5000/api/classes/all', {
+                const response = await fetch(`${API_CONFIG.apiBaseUrl}/api/classes/all`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }

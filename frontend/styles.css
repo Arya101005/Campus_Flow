@@ -39,8 +39,8 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--gray-100);
-    color: var(--gray-800);
+    background-color: white;
+    color: #000000;
     line-height: 1.6;
     min-height: 100vh;
 }
@@ -114,7 +114,7 @@ body {
 }
 
 .auth-subtitle {
-    color: var(--gray-500);
+    color: #4b5563;
     font-size: 0.95rem;
 }
 
@@ -151,7 +151,7 @@ body {
 }
 
 .form-input::placeholder {
-    color: #9ca3af;
+    color: #6b7280;
 }
 
 .form-select {
@@ -314,7 +314,7 @@ body {
 .auth-link {
     text-align: center;
     margin-top: 1.5rem;
-    color: #6b7280;
+    color: #374151;
     font-size: 0.9rem;
 }
 
@@ -399,7 +399,7 @@ body {
     align-items: center;
     gap: 0.75rem;
     padding: 0.875rem 1rem;
-    color: #d1d5db;
+    color: #e5e7eb;
     text-decoration: none;
     border-radius: var(--radius);
     transition: var(--transition);
@@ -457,7 +457,7 @@ body {
 
 .user-role {
     font-size: 0.75rem;
-    color: #9ca3af;
+    color: #d1d5db;
     text-transform: capitalize;
 }
 
@@ -466,7 +466,7 @@ body {
     flex: 1;
     margin-left: 280px;
     padding: 2rem;
-    background-color: var(--gray-100);
+    background-color: white;
     min-height: 100vh;
 }
 
@@ -480,11 +480,11 @@ body {
 .page-title {
     font-size: 1.75rem;
     font-weight: 700;
-    color: var(--gray-800);
+    color: #000000;
 }
 
 .page-subtitle {
-    color: #6b7280;
+    color: #4b5563;
     font-size: 0.95rem;
     margin-top: 0.25rem;
 }

@@ -6,43 +6,57 @@
     <title>Campus Flow</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
     <script>
         // Simple router to handle Vercel SPA routing
         (function() {
             const path = window.location.pathname;
             
             // If accessing dashboard directly, redirect to login first
-            if (path !== '/' && path !== '/login') {
+            if (path !== '/' && path !== '/login' && path !== '/login.html') {
+                // Check if user is logged in
+                const token = localStorage.getItem('token');
+                const user = localStorage.getItem('user');
+                
+                if (!token || !user) {
+                    window.location.href = '/login';
+                    return;
+                }
+            }
+            
+            // If accessing root, redirect to login
+            if (path === '/' || path === '/index.html') {
+                const token = localStorage.getItem('token');
+                const user = localStorage.getItem('user');
+                
+                if (token && user) {
+                    try {
+                        const userData = JSON.parse(user);
+                        window.location.href = `/${userData.role}Dashboard`;
+                        return;
+                    } catch (e) {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                    }
+                }
                 window.location.href = '/login';
+                return;
             }
         })();
     </script>
 </head>
 <body>
-    <div id="app">
-        <!-- Login page loads by default -->
+    <div class="auth-container">
+        <div class="decoration decoration-1"></div>
+        <div class="decoration decoration-2"></div>
+        
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">🎓</div>
+                <h1 class="auth-title">Campus Flow</h1>
+                <p class="auth-subtitle">Loading...</p>
+            </div>
+        </div>
     </div>
-    <script>
-        // Load login content
-        fetch('login.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('app').innerHTML = html;
-                document.getElementById('app').querySelector('title').textContent = 'Login - Campus Flow';
-            })
-            .catch(() => {
-                document.getElementById('app').innerHTML = `
-                    <div class="auth-container">
-                        <div class="auth-card">
-                            <div class="auth-header">
-                                <div class="auth-logo">🎓</div>
-                                <h1 class="auth-title">Campus Flow</h1>
-                                <p class="auth-subtitle">Loading...</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-    </script>
 </body>
 </html>

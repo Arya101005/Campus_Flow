@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Signup - Campus Flow</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <script src="config.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -104,7 +106,7 @@
             <div id="success" class="success"></div>
         </form>
         <div class="login-link">
-            Already have an account? <a href="http://localhost:5000/login">Login here</a>
+            Already have an account? <a href="/login">Login here</a>
         </div>
     </div>
 
@@ -132,7 +134,7 @@
 
             try {
                 console.log('Sending signup request with data:', { name, email, department });
-                const response = await fetch('http://localhost:5000/api/admin/signup', {
+                const response = await fetch(`${API_CONFIG.apiBaseUrl}/api/admin/signup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -164,7 +166,7 @@
                 if (data.message) {
                     successDiv.textContent = data.message;
                     setTimeout(() => {
-                        window.location.href = 'http://localhost:5000/login';
+                        window.location.href = '/login';
                     }, 2000);
                 } else {
                     errorDiv.textContent = 'Registration failed: Invalid server response';
@@ -180,4 +182,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
