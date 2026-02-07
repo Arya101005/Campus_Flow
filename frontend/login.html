@@ -63,13 +63,6 @@
     </div>
 
     <script>
-        // Demo users stored locally (no database needed)
-        const DEMO_USERS = {
-            'student': { email: 'student@campusflow.in', password: 'student123', name: 'John Student' },
-            'teacher': { email: 'teacher@campusflow.in', password: 'teacher123', name: 'Sarah Teacher' },
-            'admin': { email: 'admin@campusflow.in', password: 'admin123', name: 'Admin User' }
-        };
-
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const toggleBtn = document.querySelector('.password-toggle svg');
@@ -129,38 +122,25 @@
             const password = document.getElementById('password').value;
             const role = document.getElementById('role').value;
             
-            if (!email || !password) {
-                showError('Please fill in all fields');
-                setLoading(false);
-                return;
-            }
-            
             // Simulate login delay
             setTimeout(() => {
-                const demoUser = DEMO_USERS[role];
+                // Accept any credentials - just redirect based on role
+                const user = {
+                    id: 'user-' + Date.now(),
+                    name: email.split('@')[0],
+                    email: email,
+                    role: role
+                };
+                localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('role', role);
                 
-                if (demoUser && demoUser.email === email && demoUser.password === password) {
-                    // Login successful - store user in localStorage
-                    const user = {
-                        id: 'demo-' + role + '-' + Date.now(),
-                        name: demoUser.name,
-                        email: email,
-                        role: role
-                    };
-                    localStorage.setItem('user', JSON.stringify(user));
-                    localStorage.setItem('role', role);
-                    
-                    showSuccess('Login successful! Redirecting...');
-                    
-                    setTimeout(() => {
-                        window.location.replace('/' + role + 'Dashboard.html');
-                    }, 800);
-                } else {
-                    // Show demo credentials hint
-                    showError('Invalid credentials. Try: ' + demoUser.email + ' / ' + demoUser.password);
-                }
+                showSuccess('Login successful! Redirecting...');
+                
+                setTimeout(() => {
+                    window.location.replace('/' + role + 'Dashboard.html');
+                }, 800);
                 setLoading(false);
-            }, 1000);
+            }, 500);
         });
 
         // Check if already logged in
