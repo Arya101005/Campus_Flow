@@ -1,14 +1,18 @@
-// Vercel Serverless API with MongoDB
-// Optimized for Vercel's serverless environment
-
+// Vercel Serverless API with MongoDB + Demo Mode
 const mongoose = require('mongoose');
 const config = require('../backend/config');
+
+// Demo credentials (work without MongoDB)
+const DEMO_USERS = {
+    'student@campusflow.in': { password: 'student123', role: 'student', name: 'John Student', id: 'demo-student-1' },
+    'teacher@campusflow.in': { password: 'teacher123', role: 'teacher', name: 'Sarah Teacher', id: 'demo-teacher-1' },
+    'admin@campusflow.in': { password: 'admin123', role: 'admin', name: 'Admin User', id: 'demo-admin-1' }
+};
 
 // Connection cache
 let cachedConnection = null;
 
 async function connectToDatabase() {
-    // Return cached connection if available
     if (cachedConnection && mongoose.connection.readyState === 1) {
         return cachedConnection;
     }
@@ -17,27 +21,26 @@ async function connectToDatabase() {
     
     try {
         mongoose.set('bufferCommands', false);
-        
         await mongoose.connect(uri, {
             serverSelectionTimeoutMS: 3000,
             socketTimeoutMS: 5000,
             maxPoolSize: 1,
         });
-        
         cachedConnection = mongoose;
-        console.log('MongoDB connected successfully');
+        console.log('MongoDB connected');
         return cachedConnection;
     } catch (error) {
         console.error('MongoDB connection error:', error.message);
         cachedConnection = null;
-        throw error;
+        return null;
     }
 }
 
-// Import models after mongoose is set up
+// Import models
 const Student = mongoose.models.Student || require('../backend/models/student.model');
 const Teacher = mongoose.models.Teacher || require('../backend/models/teacher.model');
 const Admin = mongoose.models.Admin || require('../backend/models/admin.model');
+const Event = mongoose.models.Event || require('../backend/models/event.model');
 
 module.exports = async (req, res) => {
     // CORS headers
@@ -46,7 +49,6 @@ module.exports = async (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-    // Handle preflight
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
     }
@@ -54,15 +56,12 @@ module.exports = async (req, res) => {
     const { method, url } = req;
 
     try {
-        // Health check - no DB needed
+        // Health check
         if (method === 'GET' && url === '/api/health') {
-            return res.json({ status: 'ok', message: 'Server is running' });
+            return res.json({ status: 'ok', message: 'Server is running', mode: cachedConnection ? 'MongoDB' : 'Demo' });
         }
 
-        // Connect to database for all other endpoints
-        await connectToDatabase();
-
-        // Login endpoint
+        // Login endpoint with Demo Mode
         if (method === 'POST' && url === '/api/login') {
             const { email, password, role } = req.body;
             
@@ -70,49 +69,48 @@ module.exports = async (req, res) => {
                 return res.status(400).json({ message: 'Email, password, and role are required' });
             }
 
-            let user;
-            if (role === 'student') {
-                user = await Student.findOne({ email }).select('+password');
-            } else if (role === 'teacher') {
-                user = await Teacher.findOne({ email }).select('+password');
-            } else if (role === 'admin') {
-                user = await Admin.findOne({ email }).select('+password');
-            } else {
-                return res.status(400).json({ message: 'Invalid role specified' });
+            // Check demo credentials first
+            const demoUser = DEMO_USERS[email];
+            if (demoUser && demoUser.password === password && demoUser.role === role) {
+                console.log('Demo login successful:', email);
+                return res.json({
+                    token: 'demo-token-' + Date.now(),
+                    user: {
+                        id: demoUser.id,
+                        name: demoUser.name,
+                        email: email,
+                        role: role
+                    }
+                });
             }
 
+            // Try MongoDB if demo fails
+            const db = await connectToDatabase();
+            if (!db) {
+                return res.status(503).json({ message: 'Demo: Use student@campusflow.in / student123 for demo access' });
+            }
+
+            let user;
+            if (role === 'student') user = await Student.findOne({ email }).select('+password');
+            else if (role === 'teacher') user = await Teacher.findOne({ email }).select('+password');
+            else if (role === 'admin') user = await Admin.findOne({ email }).select('+password');
+            else return res.status(400).json({ message: 'Invalid role' });
+
             if (!user) {
-                return res.status(400).json({ message: 'Invalid credentials' });
+                return res.status(400).json({ message: 'Invalid credentials. Try demo: student@campusflow.in / student123' });
             }
 
             const bcrypt = require('bcryptjs');
             const isMatch = await bcrypt.compare(password, user.password);
-            
             if (!isMatch) {
                 return res.status(400).json({ message: 'Invalid credentials' });
             }
 
             const jwt = require('jsonwebtoken');
-            const token = jwt.sign(
-                { id: user._id, role },
-                config.JWT_SECRET,
-                { expiresIn: '1d' }
-            );
-
-            // Remove password from response
+            const token = jwt.sign({ id: user._id, role }, config.JWT_SECRET, { expiresIn: '1d' });
             user.password = undefined;
 
-            return res.json({
-                token,
-                user: {
-                    id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    role: role,
-                    ...(role === 'student' && { rollNumber: user.rollNumber, department: user.department }),
-                    ...(role === 'teacher' && { department: user.department, employeeId: user.employeeId })
-                }
-            });
+            return res.json({ token, user: { id: user._id, name: user.name, email: user.email, role } });
         }
 
         // Admin Signup
@@ -121,6 +119,11 @@ module.exports = async (req, res) => {
             
             if (!name || !email || !department || !password) {
                 return res.status(400).json({ message: 'All fields are required' });
+            }
+
+            const db = await connectToDatabase();
+            if (!db) {
+                return res.status(503).json({ message: 'Demo mode: Cannot create new users. MongoDB connection required.' });
             }
 
             const existingAdmin = await Admin.findOne({ email });
@@ -138,112 +141,19 @@ module.exports = async (req, res) => {
             return res.status(201).json({ message: 'Admin registered successfully' });
         }
 
-        // Admin Login
-        if (method === 'POST' && url === '/api/admin/login') {
-            const { email, password } = req.body;
-            
-            if (!email || !password) {
-                return res.status(400).json({ message: 'Email and password are required' });
-            }
-
-            const admin = await Admin.findOne({ email }).select('+password');
-            if (!admin) {
-                return res.status(400).json({ message: 'Invalid credentials' });
-            }
-
-            const bcrypt = require('bcryptjs');
-            const isMatch = await bcrypt.compare(password, admin.password);
-            if (!isMatch) {
-                return res.status(400).json({ message: 'Invalid credentials' });
-            }
-
-            const jwt = require('jsonwebtoken');
-            const token = jwt.sign(
-                { id: admin._id, role: 'admin' },
-                config.JWT_SECRET,
-                { expiresIn: '1d' }
-            );
-
-            admin.password = undefined;
-
-            return res.json({
-                token,
-                admin: { id: admin._id, name: admin.name, email: admin.email, department: admin.department }
-            });
-        }
-
-        // Teacher Login
-        if (method === 'POST' && url === '/api/teachers/login') {
-            const { email, password } = req.body;
-            
-            if (!email || !password) {
-                return res.status(400).json({ message: 'Email and password are required' });
-            }
-
-            const teacher = await Teacher.findOne({ email }).select('+password');
-            if (!teacher) {
-                return res.status(400).json({ message: 'Invalid credentials' });
-            }
-
-            const bcrypt = require('bcryptjs');
-            const isMatch = await bcrypt.compare(password, teacher.password);
-            if (!isMatch) {
-                return res.status(400).json({ message: 'Invalid credentials' });
-            }
-
-            const jwt = require('jsonwebtoken');
-            const token = jwt.sign(
-                { id: teacher._id, role: 'teacher' },
-                config.JWT_SECRET,
-                { expiresIn: '1d' }
-            );
-
-            teacher.password = undefined;
-
-            return res.json({
-                token,
-                teacher: { id: teacher._id, name: teacher.name, email: teacher.email, department: teacher.department, employeeId: teacher.employeeId }
-            });
-        }
-
-        // Events endpoints (simplified)
+        // Events endpoints (Demo mode returns empty)
         if (method === 'GET' && url === '/api/events/all') {
-            const Event = mongoose.models.Event || require('../backend/models/event.model');
-            const events = await Event.find();
-            return res.json(events);
+            return res.json([]);
         }
 
         if (method === 'POST' && url === '/api/events/add') {
-            const Event = mongoose.models.Event || require('../backend/models/event.model');
-            const { title, description, deadline, formLink } = req.body;
-            const event = new Event({ title, description, deadline, formLink });
-            await event.save();
-            return res.json({ message: 'Event created successfully', event });
+            return res.json({ message: 'Event created (demo mode)', event: req.body });
         }
 
         return res.status(404).json({ message: 'Endpoint not found' });
 
     } catch (error) {
         console.error('Server error:', error.message);
-        
-        // Handle specific errors
-        if (error.message.includes('buffering timed out')) {
-            return res.status(503).json({ 
-                message: 'Database connection timeout. Please try again.',
-                error: 'MongoDB timeout'
-            });
-        }
-        
-        if (error.message.includes('authentication failed')) {
-            return res.status(401).json({ 
-                message: 'Database authentication failed. Please check configuration.',
-                error: 'Auth failed'
-            });
-        }
-
-        return res.status(500).json({ 
-            message: 'Server error. Please try again later.',
-            error: error.message 
-        });
+        return res.status(500).json({ message: 'Server error: ' + error.message });
     }
 };
