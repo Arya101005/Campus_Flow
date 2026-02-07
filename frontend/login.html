@@ -137,7 +137,7 @@
             }
             
             try {
-                const response = await fetch(API_CONFIG.loginUrl, {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/login'), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

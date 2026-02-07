@@ -1,18 +1,16 @@
 // Frontend Configuration - Dynamic API URL based on environment
 const API_CONFIG = {
-    // Detect if we're in production or development
-    get apiBaseUrl() {
-        // Check if we're running on Vercel or similar production environment
+    // Get API base URL dynamically
+    getApiBaseUrl: function() {
         if (typeof window !== 'undefined') {
-            // Use the current origin for API calls (works for same-origin setups)
             return window.location.origin;
         }
         return 'http://localhost:5000';
     },
     
     // Helper function to get full API URL
-    getApiUrl(path) {
-        return `${this.apiBaseUrl}${path}`;
+    getApiUrl: function(path) {
+        return this.getApiBaseUrl() + path;
     },
     
     // Auth-related URLs
