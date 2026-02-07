@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Flow</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Simple router to handle Vercel SPA routing
+        (function() {
+            const path = window.location.pathname;
+            
+            // If accessing dashboard directly, redirect to login first
+            if (path !== '/' && path !== '/login') {
+                window.location.href = '/login';
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div id="app">
+        <!-- Login page loads by default -->
+    </div>
+    <script>
+        // Load login content
+        fetch('login.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('app').innerHTML = html;
+                document.getElementById('app').querySelector('title').textContent = 'Login - Campus Flow';
+            })
+            .catch(() => {
+                document.getElementById('app').innerHTML = `
+                    <div class="auth-container">
+                        <div class="auth-card">
+                            <div class="auth-header">
+                                <div class="auth-logo">🎓</div>
+                                <h1 class="auth-title">Campus Flow</h1>
+                                <p class="auth-subtitle">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+    </script>
+</body>
+</html>

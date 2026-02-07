@@ -1,14 +1,36 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "frontend",
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://your-backend-url.com/api/$1"
+      "src": "frontend/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)\\.html$",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
     },
     {
+      "src": "/static/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      },
+      "dest": "/frontend/index.html"
+    }
+  ],
+  "rewrites": [
+    {
       "source": "/(.*)",
-      "destination": "/$1.html"
+      "destination": "/frontend/index.html"
     }
   ]
 }
