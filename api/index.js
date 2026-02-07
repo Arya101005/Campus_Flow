@@ -1,63 +1,66 @@
+// Vercel Serverless API with MongoDB
+// Optimized for Vercel's serverless environment
+
 const mongoose = require('mongoose');
 const config = require('../backend/config');
 
-// MongoDB connection for serverless
-let isConnected = false;
+// Connection cache
+let cachedConnection = null;
 
-async function connectDB() {
-    if (isConnected) {
-        return mongoose;
+async function connectToDatabase() {
+    // Return cached connection if available
+    if (cachedConnection && mongoose.connection.readyState === 1) {
+        return cachedConnection;
     }
+
+    const uri = process.env.MONGODB_URI || config.MONGODB_URI;
     
     try {
-        // Check if already connected
-        if (mongoose.connection.readyState === 1) {
-            isConnected = true;
-            return mongoose;
-        }
+        mongoose.set('bufferCommands', false);
         
-        await mongoose.connect(config.MONGODB_URI, {
-            bufferCommands: false,
-            maxPoolSize: 5,
-            serverSelectionTimeoutMS: 5000,
-            socketTimeoutMS: 10000,
+        await mongoose.connect(uri, {
+            serverSelectionTimeoutMS: 3000,
+            socketTimeoutMS: 5000,
+            maxPoolSize: 1,
         });
         
-        isConnected = true;
-        console.log('MongoDB connected');
-        return mongoose;
+        cachedConnection = mongoose;
+        console.log('MongoDB connected successfully');
+        return cachedConnection;
     } catch (error) {
         console.error('MongoDB connection error:', error.message);
+        cachedConnection = null;
         throw error;
     }
 }
 
-// Import models AFTER mongoose is defined
+// Import models after mongoose is set up
 const Student = mongoose.models.Student || require('../backend/models/student.model');
 const Teacher = mongoose.models.Teacher || require('../backend/models/teacher.model');
 const Admin = mongoose.models.Admin || require('../backend/models/admin.model');
-const Class = mongoose.models.Class || require('../backend/models/class.model');
-const Event = mongoose.models.Event || require('../backend/models/event.model');
-const Task = mongoose.models.Task || require('../backend/models/task.model');
 
 module.exports = async (req, res) => {
-    // Set CORS headers
-    res.setHeader('Access-Control-Allow-Credentials', true);
+    // CORS headers
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
+    // Handle preflight
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
     }
 
     const { method, url } = req;
-    
+
     try {
-        // Health check
+        // Health check - no DB needed
         if (method === 'GET' && url === '/api/health') {
             return res.json({ status: 'ok', message: 'Server is running' });
         }
+
+        // Connect to database for all other endpoints
+        await connectToDatabase();
 
         // Login endpoint
         if (method === 'POST' && url === '/api/login') {
@@ -67,22 +70,37 @@ module.exports = async (req, res) => {
                 return res.status(400).json({ message: 'Email, password, and role are required' });
             }
 
-            await connectDB();
-            
-            let user = null;
-            if (role === 'student') user = await Student.findOne({ email });
-            else if (role === 'teacher') user = await Teacher.findOne({ email });
-            else if (role === 'admin') user = await Admin.findOne({ email });
-            else return res.status(400).json({ message: 'Invalid role specified' });
+            let user;
+            if (role === 'student') {
+                user = await Student.findOne({ email }).select('+password');
+            } else if (role === 'teacher') {
+                user = await Teacher.findOne({ email }).select('+password');
+            } else if (role === 'admin') {
+                user = await Admin.findOne({ email }).select('+password');
+            } else {
+                return res.status(400).json({ message: 'Invalid role specified' });
+            }
 
-            if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+            if (!user) {
+                return res.status(400).json({ message: 'Invalid credentials' });
+            }
 
             const bcrypt = require('bcryptjs');
             const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+            
+            if (!isMatch) {
+                return res.status(400).json({ message: 'Invalid credentials' });
+            }
 
             const jwt = require('jsonwebtoken');
-            const token = jwt.sign({ id: user._id, role }, config.JWT_SECRET, { expiresIn: '1d' });
+            const token = jwt.sign(
+                { id: user._id, role },
+                config.JWT_SECRET,
+                { expiresIn: '1d' }
+            );
+
+            // Remove password from response
+            user.password = undefined;
 
             return res.json({
                 token,
@@ -105,8 +123,6 @@ module.exports = async (req, res) => {
                 return res.status(400).json({ message: 'All fields are required' });
             }
 
-            await connectDB();
-            
             const existingAdmin = await Admin.findOne({ email });
             if (existingAdmin) {
                 return res.status(400).json({ message: 'Admin with this email already exists' });
@@ -130,17 +146,25 @@ module.exports = async (req, res) => {
                 return res.status(400).json({ message: 'Email and password are required' });
             }
 
-            await connectDB();
-            
-            const admin = await Admin.findOne({ email });
-            if (!admin) return res.status(400).json({ message: 'Invalid credentials' });
+            const admin = await Admin.findOne({ email }).select('+password');
+            if (!admin) {
+                return res.status(400).json({ message: 'Invalid credentials' });
+            }
 
             const bcrypt = require('bcryptjs');
             const isMatch = await bcrypt.compare(password, admin.password);
-            if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+            if (!isMatch) {
+                return res.status(400).json({ message: 'Invalid credentials' });
+            }
 
             const jwt = require('jsonwebtoken');
-            const token = jwt.sign({ id: admin._id, role: 'admin' }, config.JWT_SECRET, { expiresIn: '1d' });
+            const token = jwt.sign(
+                { id: admin._id, role: 'admin' },
+                config.JWT_SECRET,
+                { expiresIn: '1d' }
+            );
+
+            admin.password = undefined;
 
             return res.json({
                 token,
@@ -156,17 +180,25 @@ module.exports = async (req, res) => {
                 return res.status(400).json({ message: 'Email and password are required' });
             }
 
-            await connectDB();
-            
-            const teacher = await Teacher.findOne({ email });
-            if (!teacher) return res.status(400).json({ message: 'Invalid credentials' });
+            const teacher = await Teacher.findOne({ email }).select('+password');
+            if (!teacher) {
+                return res.status(400).json({ message: 'Invalid credentials' });
+            }
 
             const bcrypt = require('bcryptjs');
             const isMatch = await bcrypt.compare(password, teacher.password);
-            if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+            if (!isMatch) {
+                return res.status(400).json({ message: 'Invalid credentials' });
+            }
 
             const jwt = require('jsonwebtoken');
-            const token = jwt.sign({ id: teacher._id, role: 'teacher' }, config.JWT_SECRET, { expiresIn: '1d' });
+            const token = jwt.sign(
+                { id: teacher._id, role: 'teacher' },
+                config.JWT_SECRET,
+                { expiresIn: '1d' }
+            );
+
+            teacher.password = undefined;
 
             return res.json({
                 token,
@@ -174,46 +206,44 @@ module.exports = async (req, res) => {
             });
         }
 
-        // Events endpoints
+        // Events endpoints (simplified)
         if (method === 'GET' && url === '/api/events/all') {
-            await connectDB();
+            const Event = mongoose.models.Event || require('../backend/models/event.model');
             const events = await Event.find();
             return res.json(events);
         }
 
         if (method === 'POST' && url === '/api/events/add') {
-            await connectDB();
+            const Event = mongoose.models.Event || require('../backend/models/event.model');
             const { title, description, deadline, formLink } = req.body;
             const event = new Event({ title, description, deadline, formLink });
             await event.save();
             return res.json({ message: 'Event created successfully', event });
         }
 
-        // Classes endpoint
-        if (method === 'GET' && url === '/api/classes/all') {
-            await connectDB();
-            const classes = await Class.find().populate('students').populate('teacherId');
-            return res.json(classes);
-        }
-
-        // Tasks endpoints
-        if (method === 'GET' && url === '/api/tasks/teacher') {
-            await connectDB();
-            const tasks = await Task.find().populate('class');
-            return res.json(tasks);
-        }
-
-        if (method === 'POST' && url === '/api/tasks/create') {
-            await connectDB();
-            const task = new Task(req.body);
-            await task.save();
-            return res.json({ message: 'Task created successfully', task });
-        }
-
         return res.status(404).json({ message: 'Endpoint not found' });
 
     } catch (error) {
         console.error('Server error:', error.message);
-        return res.status(500).json({ message: 'Server error: ' + error.message });
+        
+        // Handle specific errors
+        if (error.message.includes('buffering timed out')) {
+            return res.status(503).json({ 
+                message: 'Database connection timeout. Please try again.',
+                error: 'MongoDB timeout'
+            });
+        }
+        
+        if (error.message.includes('authentication failed')) {
+            return res.status(401).json({ 
+                message: 'Database authentication failed. Please check configuration.',
+                error: 'Auth failed'
+            });
+        }
+
+        return res.status(500).json({ 
+            message: 'Server error. Please try again later.',
+            error: error.message 
+        });
     }
 };
