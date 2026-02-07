@@ -1,10 +1,8 @@
 {
   "scripts": {
-    "build": "echo 'Static frontend - no build needed'"
+    "build": "echo 'Static site - skipping build'",
+    "dev": "echo 'Open frontend/index.html in browser'"
   },
-  "dependencies": {
-    "bcryptjs": "^3.0.2",
-    "multer": "^2.0.0",
-    "xlsx": "^0.18.5"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
