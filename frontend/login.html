@@ -20,8 +20,7 @@
             </div>
             
             <form id="loginForm">
-                <div id="errorMessage" class="error-message"></div>
-                <div id="successMessage" class="success-message"></div>
+                <div id="message" class="success-message"></div>
                 
                 <div class="form-group">
                     <label for="role" class="form-label">Login as</label>
@@ -32,136 +31,47 @@
                     </select>
                 </div>
                 
-                <div class="form-group">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="password-wrapper">
-                        <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                <circle cx="12" cy="12" r="3"></circle>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                
                 <button type="submit" class="btn btn-primary" id="submitBtn">
                     <span class="btn-text">Sign In</span>
-                    <span class="spinner" style="display: none;"></span>
                 </button>
             </form>
             
             <div class="auth-link">
-                New Admin? <a href="/adminSignup.html">Create an account</a>
+                <a href="/adminSignup.html">Create Admin Account</a>
             </div>
         </div>
     </div>
 
     <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleBtn = document.querySelector('.password-toggle svg');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleBtn.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
-            } else {
-                passwordInput.type = 'password';
-                toggleBtn.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
-            }
-        }
-
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.classList.add('show');
-            errorDiv.classList.remove('success-message');
-        }
-
-        function showSuccess(message) {
-            const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = message;
-            successDiv.classList.add('show');
-            successDiv.classList.remove('error-message');
-        }
-
-        function hideMessages() {
-            document.getElementById('errorMessage').classList.remove('show');
-            document.getElementById('successMessage').classList.remove('show');
-        }
-
-        function setLoading(loading) {
-            const btn = document.getElementById('submitBtn');
-            const btnText = btn.querySelector('.btn-text');
-            const spinner = btn.querySelector('.spinner');
-            
-            if (loading) {
-                btn.classList.add('btn-loading');
-                btnText.style.display = 'none';
-                spinner.style.display = 'inline-block';
-                btn.disabled = true;
-            } else {
-                btn.classList.remove('btn-loading');
-                btnText.style.display = 'inline';
-                spinner.style.display = 'none';
-                btn.disabled = false;
-            }
-        }
-
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            hideMessages();
-            setLoading(true);
-            
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const role = document.getElementById('role').value;
-            
-            // Simulate login delay
-            setTimeout(() => {
-                // Accept any credentials - just redirect based on role
-                const user = {
-                    id: 'user-' + Date.now(),
-                    name: email.split('@')[0],
-                    email: email,
-                    role: role
-                };
-                localStorage.setItem('user', JSON.stringify(user));
-                localStorage.setItem('role', role);
-                
-                showSuccess('Login successful! Redirecting...');
-                
-                setTimeout(() => {
-                    window.location.replace('/' + role + 'Dashboard.html');
-                }, 800);
-                setLoading(false);
-            }, 500);
-        });
-
         // Check if already logged in
         document.addEventListener('DOMContentLoaded', function() {
             const user = localStorage.getItem('user');
             const role = localStorage.getItem('role');
             
             if (user && role) {
-                try {
-                    const userData = JSON.parse(user);
-                    window.location.replace('/' + role + 'Dashboard.html');
-                } catch (e) {
-                    localStorage.removeItem('user');
-                    localStorage.removeItem('role');
-                }
+                window.location.replace('/' + role + 'Dashboard.html');
             }
         });
         
-        // Global logout function
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const role = document.getElementById('role').value;
+            
+            // Create user and redirect
+            const user = {
+                id: 'user-' + Date.now(),
+                name: role.charAt(0).toUpperCase() + role.slice(1) + ' User',
+                email: role + '@campusflow.in',
+                role: role
+            };
+            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('role', role);
+            
+            window.location.replace('/' + role + 'Dashboard.html');
+        });
+        
         function logout() {
-            localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('role');
             window.location.replace('/login.html');
