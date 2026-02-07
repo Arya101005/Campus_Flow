@@ -162,7 +162,7 @@
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                showError('Unable to connect to server. Please ensure the backend is running.');
+                showError('Unable to connect to server. Please try again later. Error: ' + (error.message || 'Connection failed'));
             } finally {
                 setLoading(false);
             }
