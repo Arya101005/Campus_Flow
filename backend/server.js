@@ -18,9 +18,9 @@ const Task = require('./models/task.model');
 // Create Express app
 const app = express();
 
-// CORS configuration
+// CORS configuration - allow all origins for local development
 app.use(cors({
-    origin: ['http://localhost:5501', 'http://127.0.0.1:5501'],
+    origin: true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
