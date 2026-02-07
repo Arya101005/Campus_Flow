@@ -36,27 +36,27 @@
     },
     {
       "source": "/login",
-      "destination": "/frontend/login.html"
+      "destination": "/login.html"
     },
     {
       "source": "/adminSignup",
-      "destination": "/frontend/adminSignup.html"
+      "destination": "/adminSignup.html"
     },
     {
       "source": "/studentDashboard",
-      "destination": "/frontend/studentDashboard.html"
+      "destination": "/studentDashboard.html"
     },
     {
       "source": "/teacherDashboard",
-      "destination": "/frontend/teacherDashboard.html"
+      "destination": "/teacherDashboard.html"
     },
     {
       "source": "/adminDashboard",
-      "destination": "/frontend/adminDashboard.html"
+      "destination": "/adminDashboard.html"
     },
     {
       "source": "/",
-      "destination": "/frontend/login.html"
+      "destination": "/login.html"
     }
   ]
 }

@@ -6,57 +6,14 @@
     <title>Campus Flow</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <link rel="stylesheet" href="styles.css">
-    <script src="config.js"></script>
     <script>
-        // Simple router to handle Vercel SPA routing
-        (function() {
-            const path = window.location.pathname;
-            
-            // If accessing dashboard directly, redirect to login first
-            if (path !== '/' && path !== '/login' && path !== '/login.html') {
-                // Check if user is logged in
-                const token = localStorage.getItem('token');
-                const user = localStorage.getItem('user');
-                
-                if (!token || !user) {
-                    window.location.href = '/login';
-                    return;
-                }
-            }
-            
-            // If accessing root, redirect to login
-            if (path === '/' || path === '/index.html') {
-                const token = localStorage.getItem('token');
-                const user = localStorage.getItem('user');
-                
-                if (token && user) {
-                    try {
-                        const userData = JSON.parse(user);
-                        window.location.href = `/${userData.role}Dashboard`;
-                        return;
-                    } catch (e) {
-                        localStorage.removeItem('token');
-                        localStorage.removeItem('user');
-                    }
-                }
-                window.location.href = '/login';
-                return;
-            }
-        })();
+        // Immediate redirect to login page
+        window.location.href = '/login';
     </script>
 </head>
 <body>
-    <div class="auth-container">
-        <div class="decoration decoration-1"></div>
-        <div class="decoration decoration-2"></div>
-        
-        <div class="auth-card">
-            <div class="auth-header">
-                <div class="auth-logo">🎓</div>
-                <h1 class="auth-title">Campus Flow</h1>
-                <p class="auth-subtitle">Loading...</p>
-            </div>
-        </div>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
+        <p>Redirecting to login...</p>
     </div>
 </body>
 </html>
