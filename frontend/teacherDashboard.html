@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Dashboard - Campus Flow</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -437,7 +438,7 @@
                                 ${cls.students.slice(0, 5).map(s => `<span class="badge badge-success">${s.name}</span>`).join('')}
                                 ${cls.students.length > 5 ? `<span class="badge badge-secondary">+${cls.students.length - 5} more</span>` : ''}
                             </div>` : 
-                            '<p style="color: var(--gray-500);">No students enrolled yet.</p>'
+                            '<p style="color: #6b7280;">No students enrolled yet.</p>'
                         }
                     </div>
                 </div>
@@ -506,15 +507,15 @@
                     <div class="card fade-in" style="margin-bottom: 1rem;">
                         <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
                             <div>
-                                <h4 style="margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                                <h4 style="margin: 0; display: flex; align-items: center; gap: 0.5rem; color: #1f2937;">
                                     ${task.title}
                                     <span class="badge badge-primary">${task.type || 'Task'}</span>
                                 </h4>
-                                <p style="color: var(--gray-500); font-size: 0.9rem; margin: 0.5rem 0 0 0;">${task.description || 'No description'}</p>
+                                <p style="color: #4b5563; font-size: 0.9rem; margin: 0.5rem 0 0 0;">${task.description || 'No description'}</p>
                             </div>
                             <span class="badge ${isActive ? 'badge-success' : 'badge-secondary'}">${isActive ? 'Active' : 'Ended'}</span>
                         </div>
-                        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; font-size: 0.9rem; color: var(--gray-600);">
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; font-size: 0.9rem; color: #6b7280;">
                             <span>📚 ${task.class || 'N/A'}</span>
                             <span class="badge badge-warning">⏰ ${deadline.toLocaleDateString()}</span>
                             <span class="badge badge-primary">📬 ${submissionCount} submissions</span>
@@ -573,8 +574,8 @@
                     <div style="padding: 1rem; border-bottom: 1px solid var(--gray-200);">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
-                                <strong>${sub.studentId?.name || 'Unknown Student'}</strong>
-                                <p style="color: var(--gray-500); margin: 0.25rem 0;">${sub.studentId?.email || ''}</p>
+                                <strong style="color: #1f2937;">${sub.studentId?.name || 'Unknown Student'}</strong>
+                                <p style="color: #6b7280; margin: 0.25rem 0;">${sub.studentId?.email || ''}</p>
                             </div>
                             <span class="badge ${getStatusBadge(sub.status)}">${sub.status}</span>
                         </div>

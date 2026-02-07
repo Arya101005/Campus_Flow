@@ -128,7 +128,7 @@ body {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: var(--gray-700);
+    color: #374151;
     font-size: 0.9rem;
 }
 
@@ -151,7 +151,7 @@ body {
 }
 
 .form-input::placeholder {
-    color: var(--gray-400);
+    color: #9ca3af;
 }
 
 .form-select {
@@ -314,7 +314,7 @@ body {
 .auth-link {
     text-align: center;
     margin-top: 1.5rem;
-    color: var(--gray-500);
+    color: #6b7280;
     font-size: 0.9rem;
 }
 
@@ -399,7 +399,7 @@ body {
     align-items: center;
     gap: 0.75rem;
     padding: 0.875rem 1rem;
-    color: var(--gray-400);
+    color: #d1d5db;
     text-decoration: none;
     border-radius: var(--radius);
     transition: var(--transition);
@@ -408,12 +408,13 @@ body {
 
 .sidebar-nav a:hover,
 .sidebar-nav a.active {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     color: white;
 }
 
 .sidebar-nav a.active {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    box-shadow: 0 4px 6px rgba(99, 102, 241, 0.3);
 }
 
 .sidebar-nav svg {
@@ -432,7 +433,8 @@ body {
     align-items: center;
     gap: 0.75rem;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius);
     margin-bottom: 1rem;
 }
@@ -455,7 +457,7 @@ body {
 
 .user-role {
     font-size: 0.75rem;
-    color: var(--gray-400);
+    color: #9ca3af;
     text-transform: capitalize;
 }
 
@@ -482,7 +484,7 @@ body {
 }
 
 .page-subtitle {
-    color: var(--gray-500);
+    color: #6b7280;
     font-size: 0.95rem;
     margin-top: 0.25rem;
 }
@@ -577,7 +579,7 @@ body {
 }
 
 .stat-content p {
-    color: var(--gray-500);
+    color: #6b7280;
     font-size: 0.9rem;
     margin-top: 0.25rem;
 }

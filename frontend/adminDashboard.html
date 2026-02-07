@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Campus Flow</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -406,8 +407,8 @@
                             ${events.map(event => `
                                 <tr>
                                     <td>
-                                        <strong>${event.title}</strong>
-                                        <p style="margin: 0.25rem 0; color: var(--gray-500); font-size: 0.9rem;">${event.description?.substring(0, 50)}...</p>
+                                        <strong style="color: #1f2937;">${event.title}</strong>
+                                        <p style="margin: 0.25rem 0; color: #4b5563; font-size: 0.9rem;">${event.description?.substring(0, 50)}...</p>
                                     </td>
                                     <td>${new Date(event.deadline).toLocaleDateString()}</td>
                                     <td>
@@ -660,7 +661,7 @@
             const formData = new FormData();
             formData.append('excelFile', file);
 
-            uploadStatus.innerHTML = '<p style="color: var(--gray-600);">Uploading and processing...</p>';
+            uploadStatus.innerHTML = '<p style="color: #4b5563;">Uploading and processing...</p>';
 
             try {
                 const response = await fetch('/api/admin/upload-excel', {
