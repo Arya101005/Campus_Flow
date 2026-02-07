@@ -30,26 +30,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                            Users
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-                            </svg>
-                            Classes
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
+                        <a href="#" onclick="loadEvents()">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                                 <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -57,16 +38,6 @@
                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                             </svg>
                             Events
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                            </svg>
-                            Uploads
                         </a>
                     </li>
                 </ul>
@@ -94,8 +65,8 @@
         <main class="main-content">
             <div class="page-header">
                 <div>
-                    <h1 class="page-title">Welcome back, <span id="adminName">Admin</span>! 👋</h1>
-                    <p class="page-subtitle">Here's what's happening with your campus today.</p>
+                    <h1 class="page-title">Welcome, <span id="adminName">Admin</span>!</h1>
+                    <p class="page-subtitle">Here's your campus dashboard.</p>
                 </div>
                 <button class="btn btn-primary" onclick="showEventForm()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -106,128 +77,8 @@
                 </button>
             </div>
 
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <h3 id="totalStudents">0</h3>
-                        <p>Total Students</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon success">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <h3 id="totalTeachers">0</h3>
-                        <p>Teachers</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon warning">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <h3 id="totalClasses">0</h3>
-                        <p>Classes</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon danger">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <h3 id="totalEvents">0</h3>
-                        <p>Active Events</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Content Grid -->
-            <div class="grid-2">
-                <!-- Excel Upload -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">📤 Upload Data</h2>
-                    </div>
-                    <form id="excelUploadForm">
-                        <div class="form-group">
-                            <label class="form-label">Choose Excel File (.xlsx)</label>
-                            <input type="file" id="excelFile" name="excelFile" class="form-input" accept=".xlsx" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="17 8 12 3 7 8"></polyline>
-                                <line x1="12" y1="3" x2="12" y2="15"></line>
-                            </svg>
-                            Upload Data
-                        </button>
-                    </form>
-                    <div id="uploadStatus" style="margin-top: 1rem;"></div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">⚡ Quick Actions</h2>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                        <button class="btn btn-secondary" onclick="loadClasses()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-                            </svg>
-                            View Classes
-                        </button>
-                        <button class="btn btn-secondary" onclick="loadEvents()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
-                            View Events
-                        </button>
-                        <button class="btn btn-secondary" onclick="loadDepartments()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="3" y1="9" x2="21" y2="9"></line>
-                                <line x1="9" y1="21" x2="9" y2="9"></line>
-                            </svg>
-                            Departments
-                        </button>
-                        <button class="btn btn-secondary" onclick="exportData()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                            </svg>
-                            Export Data
-                        </button>
-                    </div>
-                </div>
-            </div>
-
             <!-- Events Section -->
-            <div class="card" style="margin-top: 1.5rem;">
+            <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">📅 Upcoming Events</h2>
                 </div>
@@ -241,22 +92,6 @@
                         </svg>
                         <h3>No events created</h3>
                         <p>Create your first event using the button above.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Classes Section -->
-            <div class="card" style="margin-top: 1.5rem;">
-                <div class="card-header">
-                    <h2 class="card-title">📚 Classes Overview</h2>
-                </div>
-                <div id="classList">
-                    <div class="empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <h3>No classes found</h3>
-                        <p>Load classes to view details.</p>
                     </div>
                 </div>
             </div>
@@ -297,24 +132,14 @@
         </div>
     </div>
 
-    <!-- Registrations Modal -->
-    <div class="modal-overlay" id="registrationsModal">
-        <div class="modal" style="max-width: 600px;">
-            <div class="modal-header">
-                <h3 class="modal-title">Event Registrations</h3>
-                <button class="modal-close" onclick="closeRegistrationsModal()">&times;</button>
-            </div>
-            <div id="registrationsContent"></div>
-        </div>
-    </div>
-
     <script>
-        // Check authentication
+        // Check if logged in
         function checkAuth() {
-            const token = localStorage.getItem('token');
             const user = JSON.parse(localStorage.getItem('user') || '{}');
-            if (!token || user.role !== 'admin') {
-                window.location.replace('/login');
+            const role = localStorage.getItem('role');
+            
+            if (!user || role !== 'admin') {
+                window.location.replace('/login.html');
                 return false;
             }
             return true;
@@ -330,44 +155,14 @@
             document.getElementById('userAvatar').textContent = user.name?.charAt(0) || 'A';
 
             loadEvents();
-            loadStats();
-        }
-
-        // Load statistics
-        async function loadStats() {
-            try {
-                // These would be actual API calls in production
-                document.getElementById('totalStudents').textContent = '0';
-                document.getElementById('totalTeachers').textContent = '0';
-                document.getElementById('totalClasses').textContent = '0';
-            } catch (error) {
-                console.error('Error loading stats:', error);
-            }
         }
 
         // Load events
         async function loadEvents() {
             try {
-                const response = await fetch(`${API_CONFIG.apiBaseUrl}/api/events/all`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-
-                // Check if response is HTML (redirect to login)
-                const contentType = response.headers.get('content-type');
-                if (!response.ok || (contentType && contentType.includes('text/html'))) {
-                    return; // Skip silently if not authenticated
-                }
-
-                // Check if response is JSON
-                if (!contentType || !contentType.includes('application/json')) {
-                    return;
-                }
-
+                const response = await fetch(API_CONFIG.getApiUrl('/api/events/all'));
                 const events = await response.json();
                 displayEvents(events);
-                document.getElementById('totalEvents').textContent = events.length;
             } catch (error) {
                 console.error('Error loading events:', error);
             }
@@ -380,12 +175,6 @@
             if (!events || events.length === 0) {
                 eventsList.innerHTML = `
                     <div class="empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
                         <h3>No events created</h3>
                         <p>Create your first event to get started.</p>
                     </div>
@@ -400,7 +189,6 @@
                             <tr>
                                 <th>Event</th>
                                 <th>Deadline</th>
-                                <th>Registrations</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -413,17 +201,9 @@
                                     </td>
                                     <td>${new Date(event.deadline).toLocaleDateString()}</td>
                                     <td>
-                                        <span class="badge badge-primary">${event.registrations?.length || 0}</span>
-                                    </td>
-                                    <td>
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <button onclick="viewRegistrations('${event._id}')" class="btn btn-primary" style="padding: 0.375rem 0.75rem; font-size: 0.85rem;">
-                                                View
-                                            </button>
-                                            <button onclick="deleteEvent('${event._id}')" class="btn btn-danger" style="padding: 0.375rem 0.75rem; font-size: 0.85rem;">
-                                                Delete
-                                            </button>
-                                        </div>
+                                        <button onclick="deleteEvent('${event._id}')" class="btn btn-danger" style="padding: 0.375rem 0.75rem; font-size: 0.85rem;">
+                                            Delete
+                                        </button>
                                     </td>
                                 </tr>
                             `).join('')}
@@ -431,194 +211,34 @@
                     </table>
                 </div>
             `;
-        }
-
-        // Load classes
-        async function loadClasses() {
-            try {
-                const response = await fetch(`${API_CONFIG.apiBaseUrl}/api/classes/all`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-
-                // Check if response is HTML (redirect to login)
-                const contentType = response.headers.get('content-type');
-                if (!response.ok || (contentType && contentType.includes('text/html'))) {
-                    return; // Skip silently if not authenticated
-                }
-
-                // Check if response is JSON
-                if (!contentType || !contentType.includes('application/json')) {
-                    return;
-                }
-
-                const classes = await response.json();
-                displayClasses(classes);
-                document.getElementById('totalClasses').textContent = classes.length;
-            } catch (error) {
-                console.error('Error loading classes:', error);
-            }
-        }
-
-        // Display classes
-        function displayClasses(classes) {
-            const classList = document.getElementById('classList');
-
-            if (!classes || classes.length === 0) {
-                classList.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No classes found</h3>
-                        <p>Upload data to create classes.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            classList.innerHTML = `
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Class Name</th>
-                                <th>Department</th>
-                                <th>Students</th>
-                                <th>Teacher</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${classes.map(cls => `
-                                <tr>
-                                    <td><strong>${cls.name}</strong></td>
-                                    <td>${cls.department || 'N/A'}</td>
-                                    <td><span class="badge badge-primary">${cls.students?.length || 0}</span></td>
-                                    <td>${cls.teacherId?.name || 'Not assigned'}</td>
-                                    <td>
-                                        <button class="btn btn-secondary" style="padding: 0.375rem 0.75rem; font-size: 0.85rem;">Edit</button>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-        }
-
-        // Load departments
-        function loadDepartments() {
-            alert('Department management coming soon!');
-        }
-
-        // Export data
-        function exportData() {
-            alert('Export functionality coming soon!');
-        }
-
-        // Event form functions
-        function showEventForm() {
-            document.getElementById('eventModal').classList.add('show');
-            document.getElementById('createEventForm').reset();
-        }
-
-        function hideEventForm() {
-            document.getElementById('eventModal').classList.remove('show');
         }
 
         // Create event
-        document.getElementById('createEventForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const eventData = {
-                title: document.getElementById('eventTitle').value,
-                description: document.getElementById('eventDescription').value,
-                deadline: document.getElementById('eventDeadline').value,
-                formLink: document.getElementById('eventFormLink').value
-            };
+        async function createEvent(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('eventTitle').value;
+            const description = document.getElementById('eventDescription').value;
+            const deadline = document.getElementById('eventDeadline').value;
+            const formLink = document.getElementById('eventFormLink').value;
 
             try {
-                const response = await fetch('http://localhost:5000/api/events/add', {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/events/add'), {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    body: JSON.stringify(eventData)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, description, deadline, formLink })
                 });
 
                 if (response.ok) {
-                    alert('Event created successfully!');
                     hideEventForm();
                     loadEvents();
                 } else {
-                    const error = await response.json();
-                    alert(error.message || 'Error creating event');
+                    alert('Failed to create event');
                 }
             } catch (error) {
                 console.error('Error creating event:', error);
                 alert('Error creating event');
             }
-        });
-
-        // View registrations
-        async function viewRegistrations(eventId) {
-            try {
-                const response = await fetch(`http://localhost:5000/api/events/${eventId}/registrations`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-
-                if (!response.ok) throw new Error('Failed to fetch registrations');
-
-                const registrations = await response.json();
-                displayRegistrations(registrations);
-            } catch (error) {
-                console.error('Error fetching registrations:', error);
-                alert('Error loading registrations');
-            }
-        }
-
-        function displayRegistrations(registrations) {
-            const content = document.getElementById('registrationsContent');
-
-            if (!registrations || registrations.length === 0) {
-                content.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No registrations yet</h3>
-                        <p>No students have registered for this event.</p>
-                    </div>
-                `;
-            } else {
-                content.innerHTML = `
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Student</th>
-                                    <th>Email</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${registrations.map(reg => `
-                                    <tr>
-                                        <td>${reg.studentId?.name || 'Unknown'}</td>
-                                        <td>${reg.studentId?.email || 'N/A'}</td>
-                                        <td>${new Date(reg.registeredAt).toLocaleDateString()}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            }
-
-            document.getElementById('registrationsModal').classList.add('show');
-        }
-
-        function closeRegistrationsModal() {
-            document.getElementById('registrationsModal').classList.remove('show');
         }
 
         // Delete event
@@ -626,82 +246,33 @@
             if (!confirm('Are you sure you want to delete this event?')) return;
 
             try {
-                const response = await fetch(`http://localhost:5000/api/events/${eventId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-
-                if (response.ok) {
-                    alert('Event deleted successfully!');
-                    loadEvents();
-                } else {
-                    const error = await response.json();
-                    alert(error.message || 'Error deleting event');
-                }
+                await fetch(API_CONFIG.getApiUrl('/api/events/' + eventId), { method: 'DELETE' });
+                loadEvents();
             } catch (error) {
                 console.error('Error deleting event:', error);
-                alert('Error deleting event');
             }
         }
 
-        // Excel upload
-        document.getElementById('excelUploadForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // Modal functions
+        function showEventForm() {
+            document.getElementById('eventModal').classList.add('show');
+        }
 
-            const fileInput = document.getElementById('excelFile');
-            const uploadStatus = document.getElementById('uploadStatus');
-
-            if (fileInput.files.length === 0) {
-                uploadStatus.innerHTML = '<div class="error-message show">Please select an Excel file to upload.</div>';
-                return;
-            }
-
-            const file = fileInput.files[0];
-            const formData = new FormData();
-            formData.append('excelFile', file);
-
-            uploadStatus.innerHTML = '<p style="color: #4b5563;">Uploading and processing...</p>';
-
-            try {
-                const response = await fetch('/api/admin/upload-excel', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    uploadStatus.innerHTML = `
-                        <div class="success-message show">
-                            <strong>${result.message}</strong>
-                            <p>Students: ${result.summary?.students?.inserted || 0} | 
-                               Teachers: ${result.summary?.teachers?.inserted || 0}</p>
-                        </div>
-                    `;
-                    loadClasses();
-                } else {
-                    uploadStatus.innerHTML = `<div class="error-message show">${result.message || 'Upload failed'}</div>`;
-                }
-            } catch (error) {
-                console.error('Upload error:', error);
-                uploadStatus.innerHTML = '<div class="error-message show">An error occurred during upload.</div>';
-            }
-        });
+        function hideEventForm() {
+            document.getElementById('eventModal').classList.remove('show');
+            document.getElementById('createEventForm').reset();
+        }
 
         // Logout
         function logout() {
-            localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.replace('http://localhost:5000/login');
+            localStorage.removeItem('role');
+            window.location.replace('/login.html');
         }
 
-        // Initialize
+        // Initialize on load
         document.addEventListener('DOMContentLoaded', initDashboard);
+        document.getElementById('createEventForm').addEventListener('submit', createEvent);
     </script>
 </body>
 </html>

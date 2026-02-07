@@ -19,7 +19,7 @@
             <nav>
                 <ul class="sidebar-nav">
                     <li>
-                        <a href="#" onclick="showSection('dashboard')" class="active" data-section="dashboard">
+                        <a href="#" class="active">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="3" width="7" height="7"></rect>
                                 <rect x="14" y="3" width="7" height="7"></rect>
@@ -27,52 +27,6 @@
                                 <rect x="3" y="14" width="7" height="7"></rect>
                             </svg>
                             Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="showSection('classes')" data-section="classes">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                            My Classes
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="showSection('tasks')" data-section="tasks">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                            </svg>
-                            Task Management
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="showSection('timetable')" data-section="timetable">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
-                            Timetable
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="showSection('grading')" data-section="grading">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="8" y1="6" x2="21" y2="6"></line>
-                                <line x1="8" y1="12" x2="21" y2="12"></line>
-                                <line x1="8" y1="18" x2="21" y2="18"></line>
-                                <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                                <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                                <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                            </svg>
-                            Grading
                         </a>
                     </li>
                 </ul>
@@ -100,385 +54,57 @@
         <main class="main-content">
             <div class="page-header">
                 <div>
-                    <h1 class="page-title">Welcome back, <span id="teacherName">Teacher</span>! 👨‍🏫</h1>
-                    <p class="page-subtitle">Here's an overview of your classes and tasks.</p>
-                </div>
-                <button class="btn btn-primary" onclick="showTaskForm()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Create Task
-                </button>
-            </div>
-
-            <!-- Dashboard Section -->
-            <div id="dashboardSection">
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <h3 id="totalClasses">0</h3>
-                        <p>Total Classes</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon success">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <h3 id="totalTasks">0</h3>
-                        <p>Active Tasks</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon warning">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <h3 id="pendingSubmissions">0</h3>
-                        <p>Pending Reviews</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon danger">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <h3 id="totalStudents">0</h3>
-                        <p>Total Students</p>
-                    </div>
+                    <h1 class="page-title">Welcome, <span id="teacherName">Teacher</span>!</h1>
+                    <p class="page-subtitle">Here's your teacher dashboard.</p>
                 </div>
             </div>
 
-            <!-- Content Grid -->
-            <div class="grid-2">
-                <!-- My Classes -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">My Classes</h2>
-                    </div>
-                    <div id="assignedClasses">
-                        <div class="empty-state">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                            </svg>
-                            <h3>No classes assigned</h3>
-                            <p>You don't have any classes assigned yet.</p>
-                        </div>
+            <!-- Tasks Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📝 Your Tasks</h2>
+                </div>
+                <div id="tasksList">
+                    <div class="empty-state">
+                        <h3>No tasks created</h3>
+                        <p>Tasks will appear here when you create them.</p>
                     </div>
                 </div>
-
-                <!-- Task List -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">My Tasks</h2>
-                    </div>
-                    <div id="tasksList">
-                        <div class="empty-state">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                            </svg>
-                            <h3>No tasks created</h3>
-                            <p>Create your first task using the button above.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             </div>
         </main>
     </div>
 
-    <!-- Task Form Modal -->
-    <div class="modal-overlay" id="taskModal">
-        <div class="modal" style="max-width: 600px;">
-            <div class="modal-header">
-                <h3 class="modal-title">Create New Task</h3>
-                <button class="modal-close" onclick="hideTaskForm()">&times;</button>
-            </div>
-            <form id="createTaskForm">
-                <div class="form-group">
-                    <label class="form-label">Title</label>
-                    <input type="text" id="taskTitle" name="title" class="form-input" placeholder="Enter task title" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Description</label>
-                    <textarea id="taskDescription" name="description" class="form-input" rows="3" placeholder="Enter task description" required></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Class</label>
-                        <select id="taskClass" name="class" class="form-select" required>
-                            <option value="">Select a class</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Deadline</label>
-                        <input type="datetime-local" id="taskDeadline" name="deadline" class="form-input" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Assignment Type</label>
-                    <select id="taskType" name="type" class="form-select" required onchange="showTypeSpecificFields()">
-                        <option value="document">📄 Document Upload</option>
-                        <option value="form">📋 Form Submission</option>
-                        <option value="hackathon">💻 Hackathon</option>
-                        <option value="quiz">📝 Quiz</option>
-                        <option value="project">🚀 Project</option>
-                    </select>
-                </div>
-
-                <!-- Type-specific fields -->
-                <div id="documentFields" class="type-specific-fields">
-                    <div class="form-group">
-                        <label class="form-label">Task File (PDF/DOC)</label>
-                        <input type="file" id="taskFile" name="file" class="form-input" accept=".pdf,.doc,.docx">
-                    </div>
-                </div>
-
-                <div id="formFields" class="type-specific-fields" style="display: none;">
-                    <div class="form-group">
-                        <label class="form-label">Form Link</label>
-                        <input type="url" id="formLink" name="formLink" class="form-input" placeholder="https://forms.google.com/...">
-                    </div>
-                </div>
-
-                <div id="hackathonFields" class="type-specific-fields" style="display: none;">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Start Date</label>
-                            <input type="datetime-local" id="startDate" name="startDate" class="form-input">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">End Date</label>
-                            <input type="datetime-local" id="endDate" name="endDate" class="form-input">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Platform</label>
-                        <input type="text" id="platform" name="platform" class="form-input" placeholder="e.g., Devpost, HackerEarth">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Registration Link</label>
-                        <input type="url" id="registrationLink" name="registrationLink" class="form-input">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Requirements</label>
-                        <textarea id="requirements" name="requirements" class="form-input" rows="2" placeholder="Enter hackathon requirements"></textarea>
-                    </div>
-                </div>
-
-                <div id="quizFields" class="type-specific-fields" style="display: none;">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Total Questions</label>
-                            <input type="number" id="totalQuestions" name="totalQuestions" class="form-input" min="1" value="10">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Time Limit (minutes)</label>
-                            <input type="number" id="timeLimit" name="timeLimit" class="form-input" min="1" value="30">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Passing Score</label>
-                            <input type="number" id="passingScore" name="passingScore" class="form-input" min="0" value="5">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Quiz Link</label>
-                            <input type="url" id="quizLink" name="quizLink" class="form-input">
-                        </div>
-                    </div>
-                </div>
-
-                <div id="projectFields" class="type-specific-fields" style="display: none;">
-                    <div class="form-group">
-                        <label class="form-label">Requirements</label>
-                        <textarea id="projectRequirements" name="requirements" class="form-input" rows="2" placeholder="Enter project requirements"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Deliverables (comma-separated)</label>
-                        <input type="text" id="deliverables" name="deliverables" class="form-input" placeholder="e.g., Code, Documentation, Presentation">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Evaluation Criteria (comma-separated)</label>
-                        <input type="text" id="evaluationCriteria" name="evaluationCriteria" class="form-input" placeholder="e.g., Functionality, Code Quality">
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Create Task</button>
-                    <button type="button" class="btn btn-secondary" onclick="hideTaskForm()">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Submissions Modal -->
-    <div class="modal-overlay" id="submissionsModal">
-        <div class="modal" style="max-width: 700px;">
-            <div class="modal-header">
-                <h3 class="modal-title">Task Submissions</h3>
-                <button class="modal-close" onclick="closeSubmissionsModal()">&times;</button>
-            </div>
-            <div id="submissionsContent"></div>
-        </div>
-    </div>
-
     <script>
-        // Check if user is logged in
+        // Check if logged in
         function checkAuth() {
-            const token = localStorage.getItem('token');
             const user = JSON.parse(localStorage.getItem('user') || '{}');
-
-            if (!token || user.role !== 'teacher') {
-                window.location.replace('/login');
+            const role = localStorage.getItem('role');
+            
+            if (!user || role !== 'teacher') {
+                window.location.replace('/login.html');
                 return false;
             }
             return true;
         }
 
-        // Initialize dashboard
+        // Initialize
         function initDashboard() {
             if (!checkAuth()) return;
 
             const user = JSON.parse(localStorage.getItem('user') || '{}');
-            
             document.getElementById('teacherName').textContent = user.name?.split(' ')[0] || 'Teacher';
             document.getElementById('userName').textContent = user.name || 'Teacher';
             document.getElementById('userAvatar').textContent = user.name?.charAt(0) || 'T';
 
-            loadAssignedClasses();
             loadTasks();
-        }
-
-        // Load assigned classes
-        async function loadAssignedClasses() {
-            try {
-                const response = await fetch(`${API_CONFIG.apiBaseUrl}/api/teachers/classes`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-
-                // Check if response is HTML (redirect to login)
-                const contentType = response.headers.get('content-type');
-                if (!response.ok || (contentType && contentType.includes('text/html'))) {
-                    return; // Skip silently if not authenticated
-                }
-
-                // Check if response is JSON
-                if (!contentType || !contentType.includes('application/json')) {
-                    return;
-                }
-
-                const classes = await response.json();
-                displayClasses(classes);
-                updateClassStats(classes);
-            } catch (error) {
-                console.error('Error loading classes:', error);
-            }
-        }
-
-        // Display classes
-        function displayClasses(classes) {
-            const classesDiv = document.getElementById('assignedClasses');
-            const taskClassSelect = document.getElementById('taskClass');
-
-            if (!classes || classes.length === 0) {
-                classesDiv.innerHTML = `
-                    <div class="empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                        </svg>
-                        <h3>No classes assigned</h3>
-                        <p>You don't have any classes assigned yet.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            // Populate dropdown
-            taskClassSelect.innerHTML = '<option value="">Select a class</option>';
-            classes.forEach(cls => {
-                const option = document.createElement('option');
-                option.value = cls._id;
-                option.textContent = cls.name;
-                taskClassSelect.appendChild(option);
-            });
-
-            // Display classes with students
-            classesDiv.innerHTML = classes.map(cls => `
-                <div class="card fade-in" style="margin-bottom: 1rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                        <h3 style="margin: 0;">📚 ${cls.name}</h3>
-                        <span class="badge badge-primary">${cls.students?.length || 0} Students</span>
-                    </div>
-                    <div style="border-top: 1px solid var(--gray-200); padding-top: 1rem;">
-                        <p style="font-weight: 600; margin-bottom: 0.5rem;">Enrolled Students:</p>
-                        ${cls.students && cls.students.length > 0 ? 
-                            `<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                                ${cls.students.slice(0, 5).map(s => `<span class="badge badge-success">${s.name}</span>`).join('')}
-                                ${cls.students.length > 5 ? `<span class="badge badge-secondary">+${cls.students.length - 5} more</span>` : ''}
-                            </div>` : 
-                            '<p style="color: #6b7280;">No students enrolled yet.</p>'
-                        }
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Update class statistics
-        function updateClassStats(classes) {
-            const totalStudents = classes.reduce((acc, cls) => acc + (cls.students?.length || 0), 0);
-            document.getElementById('totalClasses').textContent = classes.length;
-            document.getElementById('totalStudents').textContent = totalStudents;
         }
 
         // Load tasks
         async function loadTasks() {
             try {
-                const response = await fetch(`${API_CONFIG.apiBaseUrl}/api/tasks/teacher`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-
-                // Check if response is HTML (redirect to login)
-                const contentType = response.headers.get('content-type');
-                if (!response.ok || (contentType && contentType.includes('text/html'))) {
-                    return; // Skip silently if not authenticated
-                }
-
-                // Check if response is JSON
-                if (!contentType || !contentType.includes('application/json')) {
-                    return;
-                }
-
+                const response = await fetch(API_CONFIG.getApiUrl('/api/tasks/teacher'));
                 const tasks = await response.json();
                 displayTasks(tasks);
-                updateTaskStats(tasks);
             } catch (error) {
                 console.error('Error loading tasks:', error);
             }
@@ -491,244 +117,35 @@
             if (!tasks || tasks.length === 0) {
                 tasksList.innerHTML = `
                     <div class="empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
                         <h3>No tasks created</h3>
-                        <p>Create your first task using the button above.</p>
+                        <p>Tasks will appear here when you create them.</p>
                     </div>
                 `;
                 return;
             }
 
-            tasksList.innerHTML = tasks.map(task => {
-                const deadline = new Date(task.deadline);
-                const submissionCount = task.submissions?.length || 0;
-                const isActive = deadline > new Date();
-
-                return `
-                    <div class="card fade-in" style="margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-                            <div>
-                                <h4 style="margin: 0; display: flex; align-items: center; gap: 0.5rem; color: #1f2937;">
-                                    ${task.title}
-                                    <span class="badge badge-primary">${task.type || 'Task'}</span>
-                                </h4>
-                                <p style="color: #4b5563; font-size: 0.9rem; margin: 0.5rem 0 0 0;">${task.description || 'No description'}</p>
-                            </div>
-                            <span class="badge ${isActive ? 'badge-success' : 'badge-secondary'}">${isActive ? 'Active' : 'Ended'}</span>
+            tasksList.innerHTML = tasks.map(task => `
+                <div class="task-item card fade-in" style="margin-bottom: 1rem;">
+                    <div class="task-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span class="task-title" style="font-weight: 600; font-size: 1.1rem; color: #1f2937;">${task.title}</span>
+                            <span class="badge badge-primary">${task.type || 'Task'}</span>
                         </div>
-                        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; font-size: 0.9rem; color: #6b7280;">
-                            <span>📚 ${task.class || 'N/A'}</span>
-                            <span class="badge badge-warning">⏰ ${deadline.toLocaleDateString()}</span>
-                            <span class="badge badge-primary">📬 ${submissionCount} submissions</span>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <button onclick="viewSubmissions('${task._id}')" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
-                                View Submissions
-                            </button>
-                        </div>
+                        <span class="badge badge-warning">⏰ ${new Date(task.deadline).toLocaleDateString()}</span>
                     </div>
-                `;
-            }).join('');
+                    <p style="color: #4b5563; margin-bottom: 1rem;">${task.description || 'No description'}</p>
+                </div>
+            `).join('');
         }
-
-        // Update task statistics
-        function updateTaskStats(tasks) {
-            const activeTasks = tasks.filter(t => new Date(t.deadline) > new Date()).length;
-            const totalSubmissions = tasks.reduce((acc, t) => acc + (t.submissions?.length || 0), 0);
-            
-            document.getElementById('totalTasks').textContent = activeTasks;
-            document.getElementById('pendingSubmissions').textContent = totalSubmissions;
-        }
-
-        // View submissions
-        async function viewSubmissions(taskId) {
-            try {
-                const response = await fetch(`http://localhost:5000/api/tasks/${taskId}/submissions`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-
-                if (!response.ok) throw new Error('Failed to fetch submissions');
-
-                const submissions = await response.json();
-                displaySubmissions(submissions);
-            } catch (error) {
-                console.error('Error fetching submissions:', error);
-                alert('Error loading submissions');
-            }
-        }
-
-        // Display submissions
-        function displaySubmissions(submissions) {
-            const content = document.getElementById('submissionsContent');
-            
-            if (!submissions || submissions.length === 0) {
-                content.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No submissions yet</h3>
-                        <p>Students haven't submitted any work yet.</p>
-                    </div>
-                `;
-            } else {
-                content.innerHTML = submissions.map(sub => `
-                    <div style="padding: 1rem; border-bottom: 1px solid var(--gray-200);">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <strong style="color: #1f2937;">${sub.studentId?.name || 'Unknown Student'}</strong>
-                                <p style="color: #6b7280; margin: 0.25rem 0;">${sub.studentId?.email || ''}</p>
-                            </div>
-                            <span class="badge ${getStatusBadge(sub.status)}">${sub.status}</span>
-                        </div>
-                        <div style="margin-top: 0.5rem;">
-                            <span class="badge badge-warning">📅 ${new Date(sub.submittedAt).toLocaleString()}</span>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            document.getElementById('submissionsModal').classList.add('show');
-        }
-
-        function getStatusBadge(status) {
-            switch (status) {
-                case 'submitted': return 'badge-success';
-                case 'late': return 'badge-danger';
-                default: return 'badge-warning';
-            }
-        }
-
-        function closeSubmissionsModal() {
-            document.getElementById('submissionsModal').classList.remove('show');
-        }
-
-        // Task form functions
-        function showTaskForm() {
-            document.getElementById('taskModal').classList.add('show');
-            document.getElementById('createTaskForm').reset();
-            showTypeSpecificFields();
-        }
-
-        function hideTaskForm() {
-            document.getElementById('taskModal').classList.remove('show');
-        }
-
-        function showTypeSpecificFields() {
-            const type = document.getElementById('taskType').value;
-            document.querySelectorAll('.type-specific-fields').forEach(field => {
-                field.style.display = 'none';
-            });
-            document.getElementById(`${type}Fields`).style.display = 'block';
-        }
-
-        // Create task
-        document.getElementById('createTaskForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                title: document.getElementById('taskTitle').value,
-                description: document.getElementById('taskDescription').value,
-                class: document.getElementById('taskClass').value,
-                deadline: document.getElementById('taskDeadline').value,
-                type: document.getElementById('taskType').value
-            };
-
-            // Add type-specific data
-            switch (formData.type) {
-                case 'form':
-                    formData.formLink = document.getElementById('formLink').value;
-                    break;
-                case 'hackathon':
-                    formData.hackathonDetails = {
-                        startDate: document.getElementById('startDate').value,
-                        endDate: document.getElementById('endDate').value,
-                        platform: document.getElementById('platform').value,
-                        registrationLink: document.getElementById('registrationLink').value,
-                        requirements: document.getElementById('requirements').value
-                    };
-                    break;
-                case 'quiz':
-                    formData.quizDetails = {
-                        totalQuestions: document.getElementById('totalQuestions').value,
-                        timeLimit: document.getElementById('timeLimit').value,
-                        passingScore: document.getElementById('passingScore').value,
-                        quizLink: document.getElementById('quizLink').value
-                    };
-                    break;
-                case 'project':
-                    formData.projectDetails = {
-                        requirements: document.getElementById('projectRequirements').value,
-                        deliverables: document.getElementById('deliverables').value.split(',').map(d => d.trim()),
-                        evaluationCriteria: document.getElementById('evaluationCriteria').value.split(',').map(c => c.trim())
-                    };
-                    break;
-            }
-
-            try {
-                const response = await fetch('http://localhost:5000/api/tasks/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                if (response.ok) {
-                    alert('Task created successfully!');
-                    hideTaskForm();
-                    loadTasks();
-                } else {
-                    const error = await response.json();
-                    alert(error.message || 'Error creating task');
-                }
-            } catch (error) {
-                console.error('Error creating task:', error);
-                alert('Error creating task');
-            }
-        });
 
         // Logout
         function logout() {
-            localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.replace('/login');
+            localStorage.removeItem('role');
+            window.location.replace('/login.html');
         }
 
-        // Navigation function
-        function showSection(section) {
-            // Update active state in sidebar
-            document.querySelectorAll('.sidebar-nav a').forEach(link => {
-                link.classList.remove('active');
-            });
-            document.querySelector(`[data-section="${section}"]`).classList.add('active');
-            
-            // Hide all sections
-            document.querySelectorAll('.content-section').forEach(sec => {
-                sec.style.display = 'none';
-            });
-            
-            // Show selected section
-            const selectedSection = document.getElementById(`${section}Section`);
-            if (selectedSection) {
-                selectedSection.style.display = 'block';
-            }
-            
-            // Update page title
-            const titles = {
-                'dashboard': 'Dashboard',
-                'classes': 'My Classes',
-                'tasks': 'Task Management',
-                'timetable': 'Timetable',
-                'grading': 'Grading'
-            };
-            document.getElementById('teacherName').parentElement.innerHTML = titles[section] || 'Dashboard';
-        }
-
-        // Initialize
+        // Initialize on load
         document.addEventListener('DOMContentLoaded', initDashboard);
     </script>
 </body>

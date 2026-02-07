@@ -123,15 +123,8 @@
             const password = document.getElementById('password').value;
             const role = document.getElementById('role').value;
             
-            // Basic validation
             if (!email || !password) {
                 showError('Please fill in all fields');
-                setLoading(false);
-                return;
-            }
-            
-            if (!isValidEmail(email)) {
-                showError('Please enter a valid email address');
                 setLoading(false);
                 return;
             }
@@ -147,54 +140,50 @@
 
                 const data = await response.json();
 
-                if (response.ok && data.token) {
-                    localStorage.setItem('token', data.token);
+                if (response.ok && data.user) {
+                    // Store user info in localStorage
                     localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('role', role);
                     
                     showSuccess('Login successful! Redirecting...');
                     
                     setTimeout(() => {
-                        const dashboardUrl = `/${data.user.role}Dashboard`;
-                        window.location.replace(dashboardUrl);
+                        window.location.replace('/' + role + 'Dashboard.html');
                     }, 1000);
                 } else {
-                    showError(data.message || 'Login failed. Please check your credentials.');
+                    showError(data.message || 'Invalid credentials');
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                showError('Unable to connect to server. Please try again later. Error: ' + (error.message || 'Connection failed'));
+                showError('Unable to connect. Please try again.');
             } finally {
                 setLoading(false);
             }
         });
 
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('user');
+            const role = localStorage.getItem('role');
+            
+            if (user && role) {
+                try {
+                    const userData = JSON.parse(user);
+                    window.location.replace('/' + role + 'Dashboard.html');
+                } catch (e) {
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('role');
+                }
+            }
+        });
         
         // Global logout function
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            localStorage.removeItem('role');
             window.location.replace('/login');
         }
-
-        // Check if already logged in
-        document.addEventListener('DOMContentLoaded', function() {
-            const token = localStorage.getItem('token');
-            const user = localStorage.getItem('user');
-            
-            if (token && user) {
-                try {
-                    const userData = JSON.parse(user);
-                    window.location.replace(`/${userData.role}Dashboard`);
-                } catch (e) {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                }
-            }
-        });
     </script>
 </body>
 </html>
