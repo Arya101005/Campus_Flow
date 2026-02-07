@@ -18,17 +18,22 @@
             </div>
             <nav>
                 <ul class="sidebar-nav">
-                    <li>
-                        <a href="#" class="active">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="14" width="7" height="7"></rect>
-                                <rect x="3" y="14" width="7" height="7"></rect>
-                            </svg>
-                            Dashboard
-                        </a>
-                    </li>
+                    <li><a href="#" class="active" onclick="showSection('overview')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Overview
+                    </a></li>
+                    <li><a href="#" onclick="showSection('myclasses')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        My Classes
+                    </a></li>
+                    <li><a href="#" onclick="showSection('tasks')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="<line x1="16" y113"></line>="17" x2="8" y2="17"></line></svg>
+                        Tasks
+                    </a></li>
+                    <li><a href="#" onclick="showSection('events')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        Events
+                    </a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
@@ -39,12 +44,8 @@
                         <div class="user-role">Teacher</div>
                     </div>
                 </div>
-                <button class="btn btn-secondary" onclick="logout()" style="width: 100%;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
+                <button class="btn btn-secondary" onclick="logout()" style="width: 100%; margin-top: 0.5rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     Logout
                 </button>
             </div>
@@ -52,34 +53,160 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <div class="page-header">
-                <div>
-                    <h1 class="page-title">Welcome, <span id="teacherName">Teacher</span>!</h1>
-                    <p class="page-subtitle">Here's your teacher dashboard.</p>
-                </div>
-            </div>
-
-            <!-- Tasks Section -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">📝 Your Tasks</h2>
-                </div>
-                <div id="tasksList">
-                    <div class="empty-state">
-                        <h3>No tasks created</h3>
-                        <p>Tasks will appear here when you create them.</p>
+            <!-- Overview Section -->
+            <section id="overview-section" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Welcome, <span id="teacherName">Teacher</span>!</h1>
+                        <p class="page-subtitle">Here's your teaching overview.</p>
                     </div>
                 </div>
-            </div>
+                
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">📚</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalClasses">0</div>
+                            <div class="stat-label">My Classes</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #06b6d4);">📝</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalTasks">0</div>
+                            <div class="stat-label">Tasks</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">📅</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="upcomingEvents">0</div>
+                            <div class="stat-label">Upcoming Events</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">⏰</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="pendingTasks">0</div>
+                            <div class="stat-label">Pending Tasks</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Tasks -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📝 Recent Tasks</h2>
+                    </div>
+                    <div id="recentTasks">
+                        <div class="loading">Loading...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- My Classes Section -->
+            <section id="myclasses-section" class="dashboard-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">📚 My Classes</h1>
+                        <p class="page-subtitle">View your assigned classes</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="classesList" class="table-container">
+                        <div class="loading">Loading classes...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section id="tasks-section" class="dashboard-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">📝 Tasks</h1>
+                        <p class="page-subtitle">Manage your tasks</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="showTaskForm()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Create Task
+                    </button>
+                </div>
+                <div class="card">
+                    <div id="tasksList" class="table-container">
+                        <div class="loading">Loading tasks...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Events Section -->
+            <section id="events-section" class="dashboard-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">📅 Campus Events</h1>
+                        <p class="page-subtitle">Upcoming events</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="eventsList" class="table-container">
+                        <div class="loading">Loading events...</div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
+    <!-- Task Form Modal -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Task</h3>
+                <button class="modal-close" onclick="hideTaskForm()">&times;</button>
+            </div>
+            <form id="createTaskForm">
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" id="taskTitle" class="form-input" placeholder="Enter task title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea id="taskDescription" class="form-input" rows="3" placeholder="Enter task description" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Type</label>
+                        <select id="taskType" class="form-select" required>
+                            <option value="document">Document</option>
+                            <option value="form">Form</option>
+                            <option value="quiz">Quiz</option>
+                            <option value="hackathon">Hackathon</option>
+                            <option value="project">Project</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Deadline</label>
+                        <input type="datetime-local" id="taskDeadline" class="form-input" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Form/Document Link</label>
+                    <input type="url" id="taskLink" class="form-input" placeholder="https://...">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Create Task</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideTaskForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Check if logged in
+        let currentSection = 'overview';
+
+        // Check auth
         function checkAuth() {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             const role = localStorage.getItem('role');
-            
             if (!user || role !== 'teacher') {
                 window.location.replace('/login.html');
                 return false;
@@ -90,13 +217,104 @@
         // Initialize
         function initDashboard() {
             if (!checkAuth()) return;
-
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             document.getElementById('teacherName').textContent = user.name?.split(' ')[0] || 'Teacher';
             document.getElementById('userName').textContent = user.name || 'Teacher';
             document.getElementById('userAvatar').textContent = user.name?.charAt(0) || 'T';
+            loadOverview();
+        }
 
-            loadTasks();
+        // Show section
+        function showSection(section) {
+            currentSection = section;
+            document.querySelectorAll('.dashboard-section').forEach(s => s.style.display = 'none');
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            event.target.closest('a').classList.add('active');
+
+            switch(section) {
+                case 'overview': loadOverview(); break;
+                case 'myclasses': loadClasses(); break;
+                case 'tasks': loadTasks(); break;
+                case 'events': loadEvents(); break;
+            }
+        }
+
+        // Load overview
+        async function loadOverview() {
+            try {
+                const [tasksRes, eventsRes] = await Promise.all([
+                    fetch(API_CONFIG.getApiUrl('/api/tasks/teacher')),
+                    fetch(API_CONFIG.getApiUrl('/api/events/all'))
+                ]);
+
+                const tasks = await tasksRes.json();
+                const events = await eventsRes.json();
+                const now = new Date();
+
+                const upcomingTasks = tasks.filter(t => new Date(t.deadline) > now);
+                const pendingTasks = tasks.filter(t => t.submissions?.length < 1);
+
+                document.getElementById('totalClasses').textContent = '3'; // Demo
+                document.getElementById('totalTasks').textContent = tasks.length;
+                document.getElementById('upcomingEvents').textContent = events.length;
+                document.getElementById('pendingTasks').textContent = upcomingTasks.length;
+
+                // Recent tasks
+                if (tasks.length === 0) {
+                    document.getElementById('recentTasks').innerHTML = '<div class="empty-state"><h3>No tasks</h3><p>Create your first task.</p></div>';
+                } else {
+                    document.getElementById('recentTasks').innerHTML = tasks.slice(0, 3).map(t => `
+                        <div class="task-item" style="padding: 1rem; border-bottom: 1px solid var(--gray-200);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong>${t.title}</strong>
+                                    <p style="color: var(--gray-500); font-size: 0.9rem; margin: 0.25rem 0;">${t.description?.substring(0, 50)}...</p>
+                                    <span class="badge badge-${t.type === 'quiz' ? 'warning' : t.type === 'hackathon' ? 'danger' : 'primary'}">${t.type}</span>
+                                </div>
+                                <span style="color: var(--gray-500); font-size: 0.85rem;">Due: ${new Date(t.deadline).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading overview:', error);
+            }
+        }
+
+        // Load classes
+        async function loadClasses() {
+            try {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/classes/all'));
+                const classes = await response.json();
+                
+                if (classes.length === 0) {
+                    document.getElementById('classesList').innerHTML = '<div class="empty-state"><h3>No classes</h3><p>No classes assigned.</p></div>';
+                    return;
+                }
+
+                document.getElementById('classesList').innerHTML = `
+                    <table>
+                        <thead>
+                            <tr><th>Class Name</th><th>Department</th><th>Year</th><th>Students</th></tr>
+                        </thead>
+                        <tbody>
+                            ${classes.map(c => `
+                                <tr>
+                                    <td><strong>${c.name}</strong></td>
+                                    <td>${c.department}</td>
+                                    <td>${c.year || 'N/A'}</td>
+                                    <td><span class="badge badge-primary">${c.studentCount || 0}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading classes:', error);
+                document.getElementById('classesList').innerHTML = '<div class="error-message">Error loading classes</div>';
+            }
         }
 
         // Load tasks
@@ -104,49 +322,113 @@
             try {
                 const response = await fetch(API_CONFIG.getApiUrl('/api/tasks/teacher'));
                 const tasks = await response.json();
-                displayTasks(tasks);
+                
+                if (tasks.length === 0) {
+                    document.getElementById('tasksList').innerHTML = '<div class="empty-state"><h3>No tasks</h3><p>Create your first task.</p></div>';
+                    return;
+                }
+
+                document.getElementById('tasksList').innerHTML = `
+                    <table>
+                        <thead>
+                            <tr><th>Task</th><th>Type</th><th>Class</th><th>Deadline</th></tr>
+                        </thead>
+                        <tbody>
+                            ${tasks.map(t => `
+                                <tr>
+                                    <td><strong>${t.title}</strong><br><small>${t.description?.substring(0, 30)}...</small></td>
+                                    <td><span class="badge badge-${t.type === 'quiz' ? 'warning' : t.type === 'hackathon' ? 'danger' : 'primary'}">${t.type}</span></td>
+                                    <td>${t.className || 'N/A'}</td>
+                                    <td>${new Date(t.deadline).toLocaleDateString()}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
             } catch (error) {
                 console.error('Error loading tasks:', error);
+                document.getElementById('tasksList').innerHTML = '<div class="error-message">Error loading tasks</div>';
             }
         }
 
-        // Display tasks
-        function displayTasks(tasks) {
-            const tasksList = document.getElementById('tasksList');
+        // Load events
+        async function loadEvents() {
+            try {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/events/all'));
+                const events = await response.json();
+                
+                if (events.length === 0) {
+                    document.getElementById('eventsList').innerHTML = '<div class="empty-state"><h3>No events</h3><p>No upcoming events.</p></div>';
+                    return;
+                }
 
-            if (!tasks || tasks.length === 0) {
-                tasksList.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No tasks created</h3>
-                        <p>Tasks will appear here when you create them.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            tasksList.innerHTML = tasks.map(task => `
-                <div class="task-item card fade-in" style="margin-bottom: 1rem;">
-                    <div class="task-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span class="task-title" style="font-weight: 600; font-size: 1.1rem; color: #1f2937;">${task.title}</span>
-                            <span class="badge badge-primary">${task.type || 'Task'}</span>
+                document.getElementById('eventsList').innerHTML = events.map(e => `
+                    <div class="event-card card fade-in" style="margin-bottom: 1rem; padding: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem;">${e.title}</h3>
+                                <p style="color: var(--gray-500); margin-bottom: 0.5rem;">${e.description || 'No description'}</p>
+                                <span class="badge badge-warning">📅 Due: ${new Date(e.deadline).toLocaleDateString()}</span>
+                            </div>
+                            <a href="${e.formLink}" target="_blank" class="btn btn-primary">Register</a>
                         </div>
-                        <span class="badge badge-warning">⏰ ${new Date(task.deadline).toLocaleDateString()}</span>
                     </div>
-                    <p style="color: #4b5563; margin-bottom: 1rem;">${task.description || 'No description'}</p>
-                </div>
-            `).join('');
+                `).join('');
+            } catch (error) {
+                console.error('Error loading events:', error);
+                document.getElementById('eventsList').innerHTML = '<div class="error-message">Error loading events</div>';
+            }
+        }
+
+        // Task form
+        function showTaskForm() {
+            document.getElementById('taskModal').classList.add('show');
+        }
+
+        function hideTaskForm() {
+            document.getElementById('taskModal').classList.remove('show');
+            document.getElementById('createTaskForm').reset();
+        }
+
+        // Create task
+        async function createTask(e) {
+            e.preventDefault();
+            const title = document.getElementById('taskTitle').value;
+            const description = document.getElementById('taskDescription').value;
+            const type = document.getElementById('taskType').value;
+            const deadline = document.getElementById('taskDeadline').value;
+            const formLink = document.getElementById('taskLink').value;
+
+            try {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/tasks/create'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, description, type, deadline, formLink })
+                });
+
+                if (response.ok) {
+                    hideTaskForm();
+                    loadTasks();
+                } else {
+                    alert('Failed to create task');
+                }
+            } catch (error) {
+                console.error('Error creating task:', error);
+                alert('Error creating task');
+            }
         }
 
         // Logout
         function logout() {
+            localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('role');
             window.location.replace('/login.html');
         }
 
-        // Initialize on load
+        // Initialize
         document.addEventListener('DOMContentLoaded', initDashboard);
+        document.getElementById('createTaskForm').addEventListener('submit', createTask);
     </script>
 </body>
 </html>

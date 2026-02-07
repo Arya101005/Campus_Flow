@@ -6,6 +6,7 @@
     <title>Login - Campus Flow</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
 </head>
 <body>
     <div class="auth-container">
@@ -20,7 +21,17 @@
             </div>
             
             <form id="loginForm">
-                <div id="message" class="success-message"></div>
+                <div id="message" class="error-message"></div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password">
+                </div>
                 
                 <div class="form-group">
                     <label for="role" class="form-label">Login as</label>
@@ -33,9 +44,16 @@
                 
                 <button type="submit" class="btn btn-primary" id="submitBtn">
                     <span class="btn-text">Sign In</span>
+                    <span class="spinner" style="display: none;"></span>
                 </button>
             </form>
             
+            <div class="auth-link">
+                <p>Demo Credentials:</p>
+                <small>Student: aryan.singh@campusflow.in / student123</small><br>
+                <small>Teacher: rajesh.kumar@campusflow.in / teacher123</small><br>
+                <small>Admin: admin@campusflow.in / admin123</small>
+            </div>
             <div class="auth-link">
                 <a href="/adminSignup.html">Create Admin Account</a>
             </div>
@@ -53,25 +71,50 @@
             }
         });
         
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             const role = document.getElementById('role').value;
+            const messageDiv = document.getElementById('message');
+            const submitBtn = document.getElementById('submitBtn');
             
-            // Create user and redirect
-            const user = {
-                id: 'user-' + Date.now(),
-                name: role.charAt(0).toUpperCase() + role.slice(1) + ' User',
-                email: role + '@campusflow.in',
-                role: role
-            };
-            localStorage.setItem('user', JSON.stringify(user));
-            localStorage.setItem('role', role);
+            messageDiv.className = 'error-message';
+            messageDiv.textContent = '';
+            submitBtn.disabled = true;
+            submitBtn.querySelector('.btn-text').textContent = 'Signing in...';
             
-            window.location.replace('/' + role + 'Dashboard.html');
+            try {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/login'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, role })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('role', data.user.role);
+                    window.location.replace('/' + role + 'Dashboard.html');
+                } else {
+                    messageDiv.textContent = data.message || 'Login failed';
+                    messageDiv.className = 'error-message show';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                messageDiv.textContent = 'Connection error. Please try again.';
+                messageDiv.className = 'error-message show';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.querySelector('.btn-text').textContent = 'Sign In';
+            }
         });
         
         function logout() {
+            localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('role');
             window.location.replace('/login.html');

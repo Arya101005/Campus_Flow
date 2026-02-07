@@ -18,28 +18,30 @@
             </div>
             <nav>
                 <ul class="sidebar-nav">
-                    <li>
-                        <a href="#" class="active">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="14" width="7" height="7"></rect>
-                                <rect x="3" y="14" width="7" height="7"></rect>
-                            </svg>
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="loadEvents()">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
-                            Events
-                        </a>
-                    </li>
+                    <li><a href="#" class="active" onclick="showSection('overview')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Overview
+                    </a></li>
+                    <li><a href="#" onclick="showSection('classes')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Classes
+                    </a></li>
+                    <li><a href="#" onclick="showSection('students')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        Students
+                    </a></li>
+                    <li><a href="#" onclick="showSection('teachers')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        Teachers
+                    </a></li>
+                    <li><a href="#" onclick="showSection('events')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        Events
+                    </a></li>
+                    <li><a href="#" onclick="showSection('tasks')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Tasks
+                    </a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
@@ -50,12 +52,8 @@
                         <div class="user-role">Administrator</div>
                     </div>
                 </div>
-                <button class="btn btn-secondary" onclick="logout()" style="width: 100%;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
+                <button class="btn btn-secondary" onclick="logout()" style="width: 100%; margin-top: 0.5rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     Logout
                 </button>
             </div>
@@ -63,38 +61,142 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <div class="page-header">
-                <div>
-                    <h1 class="page-title">Welcome, <span id="adminName">Admin</span>!</h1>
-                    <p class="page-subtitle">Here's your campus dashboard.</p>
-                </div>
-                <button class="btn btn-primary" onclick="showEventForm()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Create Event
-                </button>
-            </div>
-
-            <!-- Events Section -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">📅 Upcoming Events</h2>
-                </div>
-                <div id="eventsList">
-                    <div class="empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                        <h3>No events created</h3>
-                        <p>Create your first event using the button above.</p>
+            <!-- Overview Section -->
+            <section id="overview-section" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Welcome, <span id="adminName">Admin</span>!</h1>
+                        <p class="page-subtitle">Here's your campus overview.</p>
                     </div>
                 </div>
-            </div>
+                
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">📚</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalClasses">0</div>
+                            <div class="stat-label">Classes</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #06b6d4);">👥</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalStudents">0</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">👨‍🏫</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalTeachers">0</div>
+                            <div class="stat-label">Teachers</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">📅</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalEvents">0</div>
+                            <div class="stat-label">Events</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Access Cards -->
+                <div class="quick-access-grid">
+                    <div class="card quick-card" onclick="showSection('classes')">
+                        <h3>📚 Manage Classes</h3>
+                        <p>View and manage all classes</p>
+                    </div>
+                    <div class="card quick-card" onclick="showSection('events')">
+                        <h3>📅 Create Event</h3>
+                        <p>Add new campus events</p>
+                    </div>
+                    <div class="card quick-card" onclick="showSection('tasks')">
+                        <h3>📝 Assign Tasks</h3>
+                        <p>Create tasks for students</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Classes Section -->
+            <section id="classes-section" class="dashboard-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">📚 Classes</h1>
+                        <p class="page-subtitle">Manage all classes</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="classesList" class="table-container">
+                        <div class="loading">Loading classes...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Students Section -->
+            <section id="students-section" class="dashboard-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">👥 Students</h1>
+                        <p class="page-subtitle">Manage all students</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="studentsList" class="table-container">
+                        <div class="loading">Loading students...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Teachers Section -->
+            <section id="teachers-section" class="dashboard-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">👨‍🏫 Teachers</h1>
+                        <p class="page-subtitle">Manage all teachers</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="teachersList" class="table-container">
+                        <div class="loading">Loading teachers...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Events Section -->
+            <section id="events-section" class="dashboard-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">📅 Events</h1>
+                        <p class="page-subtitle">Manage campus events</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="showEventForm()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Create Event
+                    </button>
+                </div>
+                <div class="card">
+                    <div id="eventsList" class="table-container">
+                        <div class="loading">Loading events...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section id="tasks-section" class="dashboard-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">📝 Tasks</h1>
+                        <p class="page-subtitle">View all tasks</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="tasksList" class="table-container">
+                        <div class="loading">Loading tasks...</div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -133,11 +235,12 @@
     </div>
 
     <script>
-        // Check if logged in
+        let currentSection = 'overview';
+
+        // Check auth
         function checkAuth() {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             const role = localStorage.getItem('role');
-            
             if (!user || role !== 'admin') {
                 window.location.replace('/login.html');
                 return false;
@@ -148,13 +251,158 @@
         // Initialize
         function initDashboard() {
             if (!checkAuth()) return;
-
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             document.getElementById('adminName').textContent = user.name?.split(' ')[0] || 'Admin';
             document.getElementById('userName').textContent = user.name || 'Admin';
             document.getElementById('userAvatar').textContent = user.name?.charAt(0) || 'A';
+            loadOverview();
+        }
 
-            loadEvents();
+        // Show section
+        function showSection(section) {
+            currentSection = section;
+            document.querySelectorAll('.dashboard-section').forEach(s => s.style.display = 'none');
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            event.target.closest('a').classList.add('active');
+
+            // Load section data
+            switch(section) {
+                case 'overview': loadOverview(); break;
+                case 'classes': loadClasses(); break;
+                case 'students': loadStudents(); break;
+                case 'teachers': loadTeachers(); break;
+                case 'events': loadEvents(); break;
+                case 'tasks': loadTasks(); break;
+            }
+        }
+
+        // Load overview stats
+        async function loadOverview() {
+            try {
+                const [classesRes, studentsRes, teachersRes, eventsRes] = await Promise.all([
+                    fetch(API_CONFIG.getApiUrl('/api/classes/all')),
+                    fetch(API_CONFIG.getApiUrl('/api/students/all')),
+                    fetch(API_CONFIG.getApiUrl('/api/teachers/all')),
+                    fetch(API_CONFIG.getApiUrl('/api/events/all'))
+                ]);
+
+                const classes = await classesRes.json();
+                const students = await studentsRes.json();
+                const teachers = await teachersRes.json();
+                const events = await eventsRes.json();
+
+                document.getElementById('totalClasses').textContent = classes.length;
+                document.getElementById('totalStudents').textContent = students.length;
+                document.getElementById('totalTeachers').textContent = teachers.length;
+                document.getElementById('totalEvents').textContent = events.length;
+            } catch (error) {
+                console.error('Error loading overview:', error);
+            }
+        }
+
+        // Load classes
+        async function loadClasses() {
+            try {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/classes/all'));
+                const classes = await response.json();
+                
+                if (classes.length === 0) {
+                    document.getElementById('classesList').innerHTML = '<div class="empty-state"><h3>No classes</h3><p>No classes found.</p></div>';
+                    return;
+                }
+
+                document.getElementById('classesList').innerHTML = `
+                    <table>
+                        <thead>
+                            <tr><th>Class Name</th><th>Department</th><th>Year</th><th>Students</th></tr>
+                        </thead>
+                        <tbody>
+                            ${classes.map(c => `
+                                <tr>
+                                    <td><strong>${c.name}</strong></td>
+                                    <td>${c.department}</td>
+                                    <td>${c.year || 'N/A'}</td>
+                                    <td><span class="badge badge-primary">${c.studentCount || 0}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading classes:', error);
+                document.getElementById('classesList').innerHTML = '<div class="error-message">Error loading classes</div>';
+            }
+        }
+
+        // Load students
+        async function loadStudents() {
+            try {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/students/all'));
+                const students = await response.json();
+                
+                if (students.length === 0) {
+                    document.getElementById('studentsList').innerHTML = '<div class="empty-state"><h3>No students</h3><p>No students found.</p></div>';
+                    return;
+                }
+
+                document.getElementById('studentsList').innerHTML = `
+                    <table>
+                        <thead>
+                            <tr><th>Name</th><th>Roll Number</th><th>Email</th><th>Department</th><th>Class</th></tr>
+                        </thead>
+                        <tbody>
+                            ${students.map(s => `
+                                <tr>
+                                    <td><strong>${s.name}</strong></td>
+                                    <td>${s.rollNumber}</td>
+                                    <td>${s.email}</td>
+                                    <td>${s.department}</td>
+                                    <td>${s.className || 'N/A'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading students:', error);
+                document.getElementById('studentsList').innerHTML = '<div class="error-message">Error loading students</div>';
+            }
+        }
+
+        // Load teachers
+        async function loadTeachers() {
+            try {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/teachers/all'));
+                const teachers = await response.json();
+                
+                if (teachers.length === 0) {
+                    document.getElementById('teachersList').innerHTML = '<div class="empty-state"><h3>No teachers</h3><p>No teachers found.</p></div>';
+                    return;
+                }
+
+                document.getElementById('teachersList').innerHTML = `
+                    <table>
+                        <thead>
+                            <tr><th>Name</th><th>Employee ID</th><th>Email</th><th>Department</th></tr>
+                        </thead>
+                        <tbody>
+                            ${teachers.map(t => `
+                                <tr>
+                                    <td><strong>${t.name}</strong></td>
+                                    <td>${t.employeeId}</td>
+                                    <td>${t.email}</td>
+                                    <td>${t.department}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading teachers:', error);
+                document.getElementById('teachersList').innerHTML = '<div class="error-message">Error loading teachers</div>';
+            }
         }
 
         // Load events
@@ -162,61 +410,76 @@
             try {
                 const response = await fetch(API_CONFIG.getApiUrl('/api/events/all'));
                 const events = await response.json();
-                displayEvents(events);
-            } catch (error) {
-                console.error('Error loading events:', error);
-            }
-        }
+                
+                if (events.length === 0) {
+                    document.getElementById('eventsList').innerHTML = '<div class="empty-state"><h3>No events</h3><p>Create your first event.</p></div>';
+                    return;
+                }
 
-        // Display events
-        function displayEvents(events) {
-            const eventsList = document.getElementById('eventsList');
-
-            if (!events || events.length === 0) {
-                eventsList.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No events created</h3>
-                        <p>Create your first event to get started.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            eventsList.innerHTML = `
-                <div class="table-container">
+                document.getElementById('eventsList').innerHTML = `
                     <table>
                         <thead>
-                            <tr>
-                                <th>Event</th>
-                                <th>Deadline</th>
-                                <th>Actions</th>
-                            </tr>
+                            <tr><th>Event</th><th>Description</th><th>Deadline</th><th>Actions</th></tr>
                         </thead>
                         <tbody>
-                            ${events.map(event => `
+                            ${events.map(e => `
                                 <tr>
+                                    <td><strong>${e.title}</strong></td>
+                                    <td>${e.description?.substring(0, 50)}...</td>
+                                    <td>${new Date(e.deadline).toLocaleDateString()}</td>
                                     <td>
-                                        <strong style="color: #1f2937;">${event.title}</strong>
-                                        <p style="margin: 0.25rem 0; color: #4b5563; font-size: 0.9rem;">${event.description?.substring(0, 50)}...</p>
-                                    </td>
-                                    <td>${new Date(event.deadline).toLocaleDateString()}</td>
-                                    <td>
-                                        <button onclick="deleteEvent('${event._id}')" class="btn btn-danger" style="padding: 0.375rem 0.75rem; font-size: 0.85rem;">
-                                            Delete
-                                        </button>
+                                        <a href="${e.formLink}" target="_blank" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">View</a>
+                                        <button onclick="deleteEvent('${e._id}')" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Delete</button>
                                     </td>
                                 </tr>
                             `).join('')}
                         </tbody>
                     </table>
-                </div>
-            `;
+                `;
+            } catch (error) {
+                console.error('Error loading events:', error);
+                document.getElementById('eventsList').innerHTML = '<div class="error-message">Error loading events</div>';
+            }
+        }
+
+        // Load tasks
+        async function loadTasks() {
+            try {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/tasks/all'));
+                const tasks = await response.json();
+                
+                if (tasks.length === 0) {
+                    document.getElementById('tasksList').innerHTML = '<div class="empty-state"><h3>No tasks</h3><p>No tasks assigned.</p></div>';
+                    return;
+                }
+
+                document.getElementById('tasksList').innerHTML = `
+                    <table>
+                        <thead>
+                            <tr><th>Task</th><th>Type</th><th>Class</th><th>Teacher</th><th>Deadline</th></tr>
+                        </thead>
+                        <tbody>
+                            ${tasks.map(t => `
+                                <tr>
+                                    <td><strong>${t.title}</strong><br><small>${t.description?.substring(0, 30)}...</small></td>
+                                    <td><span class="badge badge-${t.type === 'quiz' ? 'warning' : t.type === 'hackathon' ? 'danger' : 'primary'}">${t.type}</span></td>
+                                    <td>${t.className || 'N/A'}</td>
+                                    <td>${t.teacherName || 'N/A'}</td>
+                                    <td>${new Date(t.deadline).toLocaleDateString()}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                document.getElementById('tasksList').innerHTML = '<div class="error-message">Error loading tasks</div>';
+            }
         }
 
         // Create event
-        async function createEvent(event) {
-            event.preventDefault();
-            
+        async function createEvent(e) {
+            e.preventDefault();
             const title = document.getElementById('eventTitle').value;
             const description = document.getElementById('eventDescription').value;
             const deadline = document.getElementById('eventDeadline').value;
@@ -232,6 +495,7 @@
                 if (response.ok) {
                     hideEventForm();
                     loadEvents();
+                    loadOverview();
                 } else {
                     alert('Failed to create event');
                 }
@@ -243,11 +507,11 @@
 
         // Delete event
         async function deleteEvent(eventId) {
-            if (!confirm('Are you sure you want to delete this event?')) return;
-
+            if (!confirm('Delete this event?')) return;
             try {
                 await fetch(API_CONFIG.getApiUrl('/api/events/' + eventId), { method: 'DELETE' });
                 loadEvents();
+                loadOverview();
             } catch (error) {
                 console.error('Error deleting event:', error);
             }
@@ -265,12 +529,13 @@
 
         // Logout
         function logout() {
+            localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('role');
             window.location.replace('/login.html');
         }
 
-        // Initialize on load
+        // Initialize
         document.addEventListener('DOMContentLoaded', initDashboard);
         document.getElementById('createEventForm').addEventListener('submit', createEvent);
     </script>

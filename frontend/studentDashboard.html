@@ -18,17 +18,22 @@
             </div>
             <nav>
                 <ul class="sidebar-nav">
-                    <li>
-                        <a href="#" class="active">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="14" width="7" height="7"></rect>
-                                <rect x="3" y="14" width="7" height="7"></rect>
-                            </svg>
-                            Dashboard
-                        </a>
-                    </li>
+                    <li><a href="#" class="active" onclick="showSection('overview')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Overview
+                    </a></li>
+                    <li><a href="#" onclick="showSection('myclass')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        My Class
+                    </a></li>
+                    <li><a href="#" onclick="showSection('tasks')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                        Tasks
+                    </a></li>
+                    <li><a href="#" onclick="showSection('events')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        Events
+                    </a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
@@ -39,12 +44,8 @@
                         <div class="user-role">Student</div>
                     </div>
                 </div>
-                <button class="btn btn-secondary" onclick="logout()" style="width: 100%;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
+                <button class="btn btn-secondary" onclick="logout()" style="width: 100%; margin-top: 0.5rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     Logout
                 </button>
             </div>
@@ -52,34 +53,127 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <div class="page-header">
-                <div>
-                    <h1 class="page-title">Welcome, <span id="studentName">Student</span>!</h1>
-                    <p class="page-subtitle">Here's your student dashboard.</p>
-                </div>
-            </div>
-
-            <!-- Events Section -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">📅 Upcoming Events</h2>
-                </div>
-                <div id="eventsList">
-                    <div class="empty-state">
-                        <h3>No upcoming events</h3>
-                        <p>Check back later for new events.</p>
+            <!-- Overview Section -->
+            <section id="overview-section" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Welcome, <span id="studentName">Student</span>!</h1>
+                        <p class="page-subtitle">Here's your student dashboard.</p>
                     </div>
                 </div>
-            </div>
+                
+                <!-- Student Info Card -->
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem;">
+                        <div class="user-avatar" style="width: 80px; height: 80px; font-size: 2rem;">S</div>
+                        <div>
+                            <h2 id="studentFullName">Student Name</h2>
+                            <p style="color: var(--gray-500);">
+                                <span id="studentRoll">Roll: </span> | 
+                                <span id="studentDept">Dept: </span> | 
+                                <span id="studentYear">Year: </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">📚</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="myTasks">0</div>
+                            <div class="stat-label">My Tasks</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">⏰</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="pendingTasks">0</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #06b6d4);">📅</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="upcomingEvents">0</div>
+                            <div class="stat-label">Upcoming Events</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">✓</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="completedTasks">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Tasks -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📝 Pending Tasks</h2>
+                    </div>
+                    <div id="pendingTasksList">
+                        <div class="loading">Loading...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- My Class Section -->
+            <section id="myclass-section" class="dashboard-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">📚 My Class</h1>
+                        <p class="page-subtitle">Your class information</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="classInfo">
+                        <div class="loading">Loading class info...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section id="tasks-section" class="dashboard-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">📝 All Tasks</h1>
+                        <p class="page-subtitle">View all your tasks and assignments</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="allTasksList">
+                        <div class="loading">Loading tasks...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Events Section -->
+            <section id="events-section" class="dashboard-section" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">📅 Campus Events</h1>
+                        <p class="page-subtitle">Upcoming events and activities</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="eventsList">
+                        <div class="loading">Loading events...</div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
     <script>
-        // Check if logged in
+        let currentSection = 'overview';
+
+        // Check auth
         function checkAuth() {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             const role = localStorage.getItem('role');
-            
             if (!user || role !== 'student') {
                 window.location.replace('/login.html');
                 return false;
@@ -90,13 +184,152 @@
         // Initialize
         function initDashboard() {
             if (!checkAuth()) return;
-
             const user = JSON.parse(localStorage.getItem('user') || '{}');
+            
             document.getElementById('studentName').textContent = user.name?.split(' ')[0] || 'Student';
+            document.getElementById('studentFullName').textContent = user.name || 'Student';
             document.getElementById('userName').textContent = user.name || 'Student';
             document.getElementById('userAvatar').textContent = user.name?.charAt(0) || 'S';
+            
+            document.getElementById('studentRoll').textContent = 'Roll: ' + (user.rollNumber || 'N/A');
+            document.getElementById('studentDept').textContent = 'Dept: ' + (user.department || 'N/A');
+            document.getElementById('studentYear').textContent = 'Year: ' + (user.year || 'N/A');
+            
+            loadOverview();
+        }
 
-            loadEvents();
+        // Show section
+        function showSection(section) {
+            currentSection = section;
+            document.querySelectorAll('.dashboard-section').forEach(s => s.style.display = 'none');
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            event.target.closest('a').classList.add('active');
+
+            switch(section) {
+                case 'overview': loadOverview(); break;
+                case 'myclass': loadClassInfo(); break;
+                case 'tasks': loadAllTasks(); break;
+                case 'events': loadEvents(); break;
+            }
+        }
+
+        // Load overview
+        async function loadOverview() {
+            try {
+                const [tasksRes, eventsRes] = await Promise.all([
+                    fetch(API_CONFIG.getApiUrl('/api/tasks/all')),
+                    fetch(API_CONFIG.getApiUrl('/api/events/all'))
+                ]);
+
+                const tasks = await tasksRes.json();
+                const events = await eventsRes.json();
+                const now = new Date();
+
+                const myTasks = tasks.length;
+                const pending = tasks.filter(t => new Date(t.deadline) > now).length;
+                const completed = tasks.filter(t => new Date(t.deadline) < now).length;
+
+                document.getElementById('myTasks').textContent = myTasks;
+                document.getElementById('pendingTasks').textContent = pending;
+                document.getElementById('upcomingEvents').textContent = events.length;
+                document.getElementById('completedTasks').textContent = completed;
+
+                // Pending tasks
+                const pendingTasks = tasks.filter(t => new Date(t.deadline) > now).slice(0, 5);
+                if (pendingTasks.length === 0) {
+                    document.getElementById('pendingTasksList').innerHTML = '<div class="empty-state"><h3>No pending tasks</h3><p>All caught up!</p></div>';
+                } else {
+                    document.getElementById('pendingTasksList').innerHTML = pendingTasks.map(t => `
+                        <div class="task-item" style="padding: 1rem; border-bottom: 1px solid var(--gray-200);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong>${t.title}</strong>
+                                    <p style="color: var(--gray-500); font-size: 0.9rem; margin: 0.25rem 0;">${t.description?.substring(0, 50)}...</p>
+                                    <span class="badge badge-${t.type === 'quiz' ? 'warning' : t.type === 'hackathon' ? 'danger' : 'primary'}">${t.type}</span>
+                                    <span style="margin-left: 0.5rem; color: var(--gray-500); font-size: 0.85rem;">Class: ${t.className || 'N/A'}</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="color: var(--gray-500); font-size: 0.85rem;">Due: ${new Date(t.deadline).toLocaleDateString()}</span><br>
+                                    <a href="${t.formLink || t.fileUrl || '#'}" target="_blank" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; margin-top: 0.5rem;">Submit</a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading overview:', error);
+            }
+        }
+
+        // Load class info
+        async function loadClassInfo() {
+            try {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/classes/all'));
+                const classes = await response.json();
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                // Find student's class
+                const myClass = classes.find(c => c.department === user.department) || classes[0];
+                
+                if (!myClass) {
+                    document.getElementById('classInfo').innerHTML = '<div class="empty-state"><h3>No class info</h3><p>Class information not available.</p></div>';
+                    return;
+                }
+
+                document.getElementById('classInfo').innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <h2 style="margin-bottom: 1rem;">${myClass.name}</h2>
+                        <p style="color: var(--gray-500); margin-bottom: 0.5rem;">Department: ${myClass.department}</p>
+                        <p style="color: var(--gray-500); margin-bottom: 1rem;">Year: ${myClass.year || '2024'}</p>
+                        <div class="stat-card" style="display: inline-block; margin: 0.5rem;">
+                            <div class="stat-value">${myClass.studentCount || 0}</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading class info:', error);
+                document.getElementById('classInfo').innerHTML = '<div class="error-message">Error loading class info</div>';
+            }
+        }
+
+        // Load all tasks
+        async function loadAllTasks() {
+            try {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/tasks/all'));
+                const tasks = await response.json();
+                
+                if (tasks.length === 0) {
+                    document.getElementById('allTasksList').innerHTML = '<div class="empty-state"><h3>No tasks</h3><p>No tasks assigned.</p></div>';
+                    return;
+                }
+
+                document.getElementById('allTasksList').innerHTML = `
+                    <table>
+                        <thead>
+                            <tr><th>Task</th><th>Type</th><th>Class</th><th>Deadline</th><th>Action</th></tr>
+                        </thead>
+                        <tbody>
+                            ${tasks.map(t => `
+                                <tr>
+                                    <td><strong>${t.title}</strong><br><small>${t.description?.substring(0, 30)}...</small></td>
+                                    <td><span class="badge badge-${t.type === 'quiz' ? 'warning' : t.type === 'hackathon' ? 'danger' : 'primary'}">${t.type}</span></td>
+                                    <td>${t.className || 'N/A'}</td>
+                                    <td>${new Date(t.deadline).toLocaleDateString()}</td>
+                                    <td>
+                                        <a href="${t.formLink || t.fileUrl || '#'}" target="_blank" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Submit</a>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                document.getElementById('allTasksList').innerHTML = '<div class="error-message">Error loading tasks</div>';
+            }
         }
 
         // Load events
@@ -104,48 +337,39 @@
             try {
                 const response = await fetch(API_CONFIG.getApiUrl('/api/events/all'));
                 const events = await response.json();
-                displayEvents(events);
+                
+                if (events.length === 0) {
+                    document.getElementById('eventsList').innerHTML = '<div class="empty-state"><h3>No events</h3><p>No upcoming events.</p></div>';
+                    return;
+                }
+
+                document.getElementById('eventsList').innerHTML = events.map(e => `
+                    <div class="event-card card fade-in" style="margin-bottom: 1rem; padding: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem;">${e.title}</h3>
+                                <p style="color: var(--gray-500); margin-bottom: 0.5rem;">${e.description || 'No description'}</p>
+                                <span class="badge badge-warning">📅 Due: ${new Date(e.deadline).toLocaleDateString()}</span>
+                            </div>
+                            <a href="${e.formLink}" target="_blank" class="btn btn-primary">Register</a>
+                        </div>
+                    </div>
+                `).join('');
             } catch (error) {
                 console.error('Error loading events:', error);
+                document.getElementById('eventsList').innerHTML = '<div class="error-message">Error loading events</div>';
             }
-        }
-
-        // Display events
-        function displayEvents(events) {
-            const eventsList = document.getElementById('eventsList');
-
-            if (!events || events.length === 0) {
-                eventsList.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No upcoming events</h3>
-                        <p>Check back later for new events.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            eventsList.innerHTML = events.map(event => `
-                <div class="event-card fade-in" style="padding: 1rem; border-bottom: 1px solid var(--gray-200);">
-                    <div style="display: flex; justify-content: space-between; align-items: start;">
-                        <div>
-                            <h4 style="margin-bottom: 0.5rem;">${event.title}</h4>
-                            <p style="color: var(--gray-500); font-size: 0.9rem; margin-bottom: 0.5rem;">${event.description || 'No description'}</p>
-                            <span class="badge badge-warning">📅 ${new Date(event.deadline).toLocaleDateString()}</span>
-                        </div>
-                        <a href="${event.formLink}" target="_blank" class="btn btn-primary" style="padding: 0.5rem 1rem;">Register</a>
-                    </div>
-                </div>
-            `).join('');
         }
 
         // Logout
         function logout() {
+            localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('role');
             window.location.replace('/login.html');
         }
 
-        // Initialize on load
+        // Initialize
         document.addEventListener('DOMContentLoaded', initDashboard);
     </script>
 </body>

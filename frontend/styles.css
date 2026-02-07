@@ -820,3 +820,44 @@ tr:hover td {
         grid-template-columns: 1fr;
     }
 }
+
+/* Quick Access Grid */
+.quick-access-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.quick-card {
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.quick-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-4px);
+}
+
+.quick-card h3 {
+    margin-bottom: 0.5rem;
+    color: var(--gray-800);
+}
+
+.quick-card p {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+}
+
+/* Loading */
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--gray-500);
+}
+
+/* Dashboard Section */
+.dashboard-section {
+    animation: fadeIn 0.3s ease-out;
+}
