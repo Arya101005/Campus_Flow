@@ -1,83 +1,29 @@
-# Campus_Flow
+# Campus Flow
 
-A comprehensive web application for educational institutions to manage academic and extracurricular workflows.
+A comprehensive campus management system with student, teacher, and admin dashboards.
 
 ## Features
-
-- **Admin Dashboard**
-  - Student and teacher management
-  - Department and class-wise organization
-  - Timetable management
-  - Attendance tracking
-  - Internal marks management
-  - Fee management
-
-- **Teacher Dashboard**
-  - Task upload and management
-  - Attendance recording
-  - Marks posting
-  - Student submission tracking
-
-- **Student Dashboard**
-  - Event registration (hackathons, internships, symposiums)
-  - Assignment access and submission
-  - Form submissions
-  - Academic record viewing
+- Student Dashboard - View tasks, events, and track progress
+- Teacher Dashboard - Manage classes, create tasks, grade submissions
+- Admin Dashboard - Manage users, classes, events, and data uploads
 
 ## Tech Stack
-
 - Frontend: HTML, CSS, JavaScript
-- Backend: Node.js, Express.js
+- Backend: Node.js, Express, MongoDB
+- Authentication: JWT
+
+## Deployment
+- Frontend: Vercel (static site)
+- Backend: Render/Railway (Node.js server)
 - Database: MongoDB Atlas
-- Authentication: Role-based login system
 
-## Project Structure
+## Login Credentials
+- Admin: admin@campusflow.in / admin123
+- Teacher: rajesh.kumar@campusflow.in / teacher123
+- Student: aryan.singh@campusflow.in / student123
 
-```
-Campus_Flow/
-├── frontend/
-│   ├── assets/
-│   ├── css/
-│   ├── js/
-│   └── pages/
-├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   └── middleware/
-└── docs/
-```
-
-## Setup Instructions
-
+## Getting Started
 1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Set up environment variables:
-   - Create a `.env` file in the backend directory
-   - Add required environment variables (see .env.example)
-
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-## Environment Variables
-
-Create a `.env` file with the following variables:
-```
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-PORT=3000
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request 
+2. Install backend dependencies: `cd backend && npm install`
+3. Start backend server: `cd backend && npm start`
+4. Frontend can be opened directly in browser (index.html)
