@@ -1,11 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "frontend/**/*",
-      "use": "@vercel/static"
-    }
-  ],
+  "framework": "static",
+  "buildCommand": "echo 'Static frontend - no build needed'",
+  "outputDirectory": "frontend",
+  "devCommand": "echo 'Open frontend/index.html in browser'",
+  "installCommand": "echo 'No dependencies to install'",
   "routes": [
     {
       "src": "/api/(.*)",
