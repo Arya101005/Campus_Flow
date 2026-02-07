@@ -6,7 +6,6 @@
     <title>Login - Campus Flow</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <link rel="stylesheet" href="styles.css">
-    <script src="config.js"></script>
 </head>
 <body>
     <div class="auth-container">
@@ -58,12 +57,19 @@
             </form>
             
             <div class="auth-link">
-                New Admin? <a href="/adminSignup">Create an account</a>
+                New Admin? <a href="/adminSignup.html">Create an account</a>
             </div>
         </div>
     </div>
 
     <script>
+        // Demo users stored locally (no database needed)
+        const DEMO_USERS = {
+            'student': { email: 'student@campusflow.in', password: 'student123', name: 'John Student' },
+            'teacher': { email: 'teacher@campusflow.in', password: 'teacher123', name: 'Sarah Teacher' },
+            'admin': { email: 'admin@campusflow.in', password: 'admin123', name: 'Admin User' }
+        };
+
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const toggleBtn = document.querySelector('.password-toggle svg');
@@ -114,7 +120,7 @@
             }
         }
 
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             hideMessages();
             setLoading(true);
@@ -129,36 +135,32 @@
                 return;
             }
             
-            try {
-                const response = await fetch(API_CONFIG.getApiUrl('/api/login'), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, password, role })
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.user) {
-                    // Store user info in localStorage
-                    localStorage.setItem('user', JSON.stringify(data.user));
+            // Simulate login delay
+            setTimeout(() => {
+                const demoUser = DEMO_USERS[role];
+                
+                if (demoUser && demoUser.email === email && demoUser.password === password) {
+                    // Login successful - store user in localStorage
+                    const user = {
+                        id: 'demo-' + role + '-' + Date.now(),
+                        name: demoUser.name,
+                        email: email,
+                        role: role
+                    };
+                    localStorage.setItem('user', JSON.stringify(user));
                     localStorage.setItem('role', role);
                     
                     showSuccess('Login successful! Redirecting...');
                     
                     setTimeout(() => {
                         window.location.replace('/' + role + 'Dashboard.html');
-                    }, 1000);
+                    }, 800);
                 } else {
-                    showError(data.message || 'Invalid credentials');
+                    // Show demo credentials hint
+                    showError('Invalid credentials. Try: ' + demoUser.email + ' / ' + demoUser.password);
                 }
-            } catch (error) {
-                console.error('Login error:', error);
-                showError('Unable to connect. Please try again.');
-            } finally {
                 setLoading(false);
-            }
+            }, 1000);
         });
 
         // Check if already logged in
@@ -182,7 +184,7 @@
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('role');
-            window.location.replace('/login');
+            window.location.replace('/login.html');
         }
     </script>
 </body>
