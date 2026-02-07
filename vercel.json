@@ -42,28 +42,8 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/login",
-      "destination": "/login.html"
-    },
-    {
-      "source": "/adminSignup",
-      "destination": "/adminSignup.html"
-    },
-    {
-      "source": "/studentDashboard",
-      "destination": "/studentDashboard.html"
-    },
-    {
-      "source": "/teacherDashboard",
-      "destination": "/teacherDashboard.html"
-    },
-    {
-      "source": "/adminDashboard",
-      "destination": "/adminDashboard.html"
-    },
-    {
       "source": "/",
-      "destination": "/login.html"
+      "destination": "/index.html"
     }
   ]
 }
