@@ -5,181 +5,210 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Signup - Campus Flow</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <link rel="stylesheet" href="styles.css">
     <script src="config.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .error {
-            color: red;
-            margin-top: 5px;
-            font-size: 14px;
-        }
-        .success {
-            color: green;
-            margin-top: 5px;
-            font-size: 14px;
-        }
-        .login-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .login-link a {
-            color: #007bff;
-            text-decoration: none;
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Admin Signup</h1>
-        <form id="signupForm">
-            <div class="form-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" required>
+    <div class="auth-container">
+        <div class="decoration decoration-1"></div>
+        <div class="decoration decoration-2"></div>
+        
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">🎓</div>
+                <h1 class="auth-title">Admin Signup</h1>
+                <p class="auth-subtitle">Create your Campus Flow account</p>
             </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+            
+            <form id="signupForm">
+                <div id="errorMessage" class="error-message"></div>
+                <div id="successMessage" class="success-message"></div>
+                
+                <div class="form-group">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-input" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="department" class="form-label">Department</label>
+                    <input type="text" id="department" name="department" class="form-input" placeholder="Enter your department" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" class="form-input" placeholder="Create a password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle" onclick="toggleConfirmPassword()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span class="btn-text">Create Account</span>
+                    <span class="spinner" style="display: none;"></span>
+                </button>
+            </form>
+            
+            <div class="auth-link">
+                Already have an account? <a href="/login">Sign in here</a>
             </div>
-            <div class="form-group">
-                <label for="department">Department</label>
-                <input type="text" id="department" name="department" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
-            </div>
-            <button type="submit">Sign Up</button>
-            <div id="error" class="error"></div>
-            <div id="success" class="success"></div>
-        </form>
-        <div class="login-link">
-            Already have an account? <a href="/login">Login here</a>
         </div>
     </div>
 
     <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('#password + .password-toggle svg');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+            }
+        }
+        
+        function toggleConfirmPassword() {
+            const confirmInput = document.getElementById('confirmPassword');
+            const toggleBtn = document.querySelector('#confirmPassword + .password-toggle svg');
+            
+            if (confirmInput.type === 'password') {
+                confirmInput.type = 'text';
+                toggleBtn.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+            } else {
+                confirmInput.type = 'password';
+                toggleBtn.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            errorDiv.classList.remove('success-message');
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.classList.add('show');
+            successDiv.classList.remove('error-message');
+        }
+
+        function hideMessages() {
+            document.getElementById('errorMessage').classList.remove('show');
+            document.getElementById('successMessage').classList.remove('show');
+        }
+
+        function setLoading(loading) {
+            const btn = document.getElementById('submitBtn');
+            const btnText = btn.querySelector('.btn-text');
+            const spinner = btn.querySelector('.spinner');
+            
+            if (loading) {
+                btn.classList.add('btn-loading');
+                btnText.style.display = 'none';
+                spinner.style.display = 'inline-block';
+                btn.disabled = true;
+            } else {
+                btn.classList.remove('btn-loading');
+                btnText.style.display = 'inline';
+                spinner.style.display = 'none';
+                btn.disabled = false;
+            }
+        }
+
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            hideMessages();
+            setLoading(true);
             
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const department = document.getElementById('department').value;
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const department = document.getElementById('department').value.trim();
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-            const errorDiv = document.getElementById('error');
-            const successDiv = document.getElementById('success');
-
-            // Clear previous messages
-            errorDiv.textContent = '';
-            successDiv.textContent = '';
-
-            // Validate passwords match
-            if (password !== confirmPassword) {
-                errorDiv.textContent = 'Passwords do not match';
+            
+            // Basic validation
+            if (!name || !email || !department || !password) {
+                showError('Please fill in all fields');
+                setLoading(false);
                 return;
             }
-
+            
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                setLoading(false);
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters');
+                setLoading(false);
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showError('Please enter a valid email address');
+                setLoading(false);
+                return;
+            }
+            
             try {
-                console.log('Sending signup request with data:', { name, email, department });
-                const response = await fetch(`${API_CONFIG.apiBaseUrl}/api/admin/signup`, {
+                const response = await fetch(API_CONFIG.getApiUrl('/api/admin/signup'), {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Content-Type': 'application/json'
                     },
-                    credentials: 'include',
                     body: JSON.stringify({ name, email, department, password })
                 });
 
-                console.log('Response status:', response.status);
-                const contentType = response.headers.get('content-type');
-                console.log('Response content type:', contentType);
+                const data = await response.json();
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('Error response:', errorText);
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                let data;
-                try {
-                    data = await response.json();
-                    console.log('Response data:', data);
-                } catch (e) {
-                    console.error('Error parsing JSON:', e);
-                    throw new Error('Invalid JSON response from server');
-                }
-
-                if (data.message) {
-                    successDiv.textContent = data.message;
+                if (response.ok) {
+                    showSuccess('Account created successfully! Redirecting to login...');
+                    
                     setTimeout(() => {
-                        window.location.href = '/login';
+                        window.location.replace('/login');
                     }, 2000);
                 } else {
-                    errorDiv.textContent = 'Registration failed: Invalid server response';
+                    showError(data.message || 'Signup failed. Please try again.');
                 }
             } catch (error) {
                 console.error('Signup error:', error);
-                if (error.message.includes('Failed to fetch')) {
-                    errorDiv.textContent = 'Error: Could not connect to server. Please check if the server is running.';
-                } else {
-                    errorDiv.textContent = `Error: ${error.message}`;
-                }
+                showError('Unable to connect to server. Please try again later.');
+            } finally {
+                setLoading(false);
             }
         });
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
     </script>
 </body>
 </html>
