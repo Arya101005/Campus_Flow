@@ -1,90 +1,62 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": "true",
+  "buildCommand": "npm install",
   "outputDirectory": "frontend",
   "devCommand": "echo 'Open frontend/index.html in browser'",
-  "installCommand": "true",
-  "routes": [
+  "installCommand": "npm install",
+  "headers": [
     {
-      "src": "/api/(.*)",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      }
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Credentials", "value": "true" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
     },
     {
-      "src": "/static/(.*)",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
+      "source": "/static/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
     },
     {
-      "src": "/login/?",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      },
-      "dest": "/frontend/login.html"
-    },
-    {
-      "src": "/adminSignup/?",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      },
-      "dest": "/frontend/adminSignup.html"
-    },
-    {
-      "src": "/studentDashboard/?",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      },
-      "dest": "/frontend/studentDashboard.html"
-    },
-    {
-      "src": "/teacherDashboard/?",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      },
-      "dest": "/frontend/teacherDashboard.html"
-    },
-    {
-      "src": "/adminDashboard/?",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      },
-      "dest": "/frontend/adminDashboard.html"
-    },
-    {
-      "src": "/styles.css",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "dest": "/frontend/styles.css"
-    },
-    {
-      "src": "/config.js",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "dest": "/frontend/config.js"
-    },
-    {
-      "src": "/(.*)\\.(html|js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      },
-      "dest": "/frontend/index.html"
+      "source": "/(.*)\\.(html|js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
     }
   ],
   "rewrites": [
     {
-      "source": "/((?!api/).*)",
-      "destination": "/frontend/index.html"
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/login",
+      "destination": "/frontend/login.html"
+    },
+    {
+      "source": "/adminSignup",
+      "destination": "/frontend/adminSignup.html"
+    },
+    {
+      "source": "/studentDashboard",
+      "destination": "/frontend/studentDashboard.html"
+    },
+    {
+      "source": "/teacherDashboard",
+      "destination": "/frontend/teacherDashboard.html"
+    },
+    {
+      "source": "/adminDashboard",
+      "destination": "/frontend/adminDashboard.html"
+    },
+    {
+      "source": "/",
+      "destination": "/frontend/login.html"
     }
   ]
 }
