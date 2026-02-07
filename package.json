@@ -1,8 +1,8 @@
 {
-  "scripts": {
-    "build": "echo 'Static site - skipping build'",
-    "dev": "echo 'Open frontend/index.html in browser'"
-  },
+  "name": "campus-flow-static",
+  "version": "1.0.0",
+  "description": "Static frontend for Campus Flow",
+  "scripts": {},
   "dependencies": {},
   "devDependencies": {}
 }

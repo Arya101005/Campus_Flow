@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "framework": "static",
-  "buildCommand": "echo 'Static frontend - no build needed'",
+  "framework": null,
+  "buildCommand": "true",
   "outputDirectory": "frontend",
   "devCommand": "echo 'Open frontend/index.html in browser'",
-  "installCommand": "echo 'No dependencies to install'",
+  "installCommand": "true",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -59,6 +59,13 @@
         "Cache-Control": "public, max-age=31536000, immutable"
       },
       "dest": "/frontend/styles.css"
+    },
+    {
+      "src": "/config.js",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      },
+      "dest": "/frontend/config.js"
     },
     {
       "src": "/(.*)\\.(html|js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$",
